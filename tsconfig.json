@@ -1,5 +1,18 @@
 {
+  "ts-node": {
+    "transpileOnly": true,
+    "transpiler": "ts-node/transpilers/swc-experimental"
+  },
   "compilerOptions": {
+    "rootDirs": ["src"],
+    "outDir": "dist",
+    "lib": ["es2020"],
+    "target": "es2020",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "types": ["node"],
+    "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
@@ -9,12 +22,10 @@
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "esModuleInterop": true,
-    "declaration": true,
     "forceConsistentCasingInFileNames": true,
   },
   "include": [
-    "src/**/*",
+    "src/**/*", "index.ts",
   ],
   "exclude": [
     "node_modules",
