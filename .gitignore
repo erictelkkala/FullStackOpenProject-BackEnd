@@ -1,2 +1,4 @@
 node_modules/
 dist/
+# VS Code codespace
+FullStackOpenProject-BackEnd.code-workspace
