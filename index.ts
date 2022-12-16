@@ -13,8 +13,7 @@ import typeDefs from './src/graphql/typedefs.js'
 const resolvers = {
   Query: {
     // Example resolver
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    adminExample: (_parent: any, _args: any, contextValue: { authScope: string; }, _info: any) => {
+    adminExample: (_parent: any, _args: any, contextValue: { authScope: string; }) => {
       if (contextValue.authScope !== 'ADMIN') {
         throw new GraphQLError('not admin!', {
           extensions: { code: 'UNAUTHENTICATED' },
