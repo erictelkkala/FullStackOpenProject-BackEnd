@@ -24,6 +24,6 @@
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*", "index.ts"],
+  "include": ["src/**/*", "src/index.ts"],
   "exclude": ["node_modules", "dist", "build"]
 }
