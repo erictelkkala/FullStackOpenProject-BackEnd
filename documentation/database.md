@@ -1,32 +1,19 @@
-### User_public database
-
-| Field       | Type   | Required | Notes       |
-| ----------- | ------ | -------- | ----------- |
-| \_ID        | ID     | Y        | Primary key |
-| Username    | String | Y        |             |
-| Displayname | String | Y        |             |
-| Email       | String | Y        |             |
-| PhoneNumber | String | N        |             |
-
----
-
 ### User_private database
 
 | Field    | Type   | Required | Notes       |
 | -------- | ------ | -------- | ----------- |
-| \_ID     | ID     | Y        | Primary key |
-| Username | String | Y        |             |
-| Password | String | Y        | Encrypted   |
+| \_id     | ID     | Y        | Primary key |
+| username | String | Y        |             |
+| password | String | Y        | Encrypted   |
 
 ---
 
 ### Item database
 
-| Field            | Type   | Required | Notes                     |
-| ---------------- | ------ | -------- | ------------------------- |
-| \_ID             | ID     | Y        | Primary key               |
-| Listing_title    | String | Y        |                           |
-| Listing_body     | String | Y        |                           |
-| Listing_price    | Number | N        | Value in currency (euros) |
-| Listing_location | String | Y        |                           |
-| User_reference   | ID     | Y        |                           |
+| Field               | Type   | Required | Notes                     |
+| ------------------- | ------ | -------- | ------------------------- |
+| \_ID                | ID     | Y        | Primary key               |
+| listing_title       | String | Y        |                           |
+| listing_description | String | Y        |                           |
+| listing_price       | Number | N        | Value in currency (euros) |
+| listing_image       | String | Y        |                           |
