@@ -8,8 +8,9 @@
 
 - Node 18.12.1
 
-## How to install the project: 
+## How to install the project:
 
 To install the project, run the following commands:
+
 - `npm install`
 - `npm run start`

@@ -13,14 +13,14 @@ import typeDefs from './src/graphql/typedefs.js'
 const resolvers = {
   Query: {
     // Example resolver
-    adminExample: (_parent: any, _args: any, contextValue: { authScope: string; }) => {
+    adminExample: (_parent: any, _args: any, contextValue: { authScope: string }) => {
       if (contextValue.authScope !== 'ADMIN') {
         throw new GraphQLError('not admin!', {
-          extensions: { code: 'UNAUTHENTICATED' },
+          extensions: { code: 'UNAUTHENTICATED' }
         })
       }
-    },
-  },
+    }
+  }
 }
 
 const app = express()
@@ -42,7 +42,7 @@ const httpServer = http.createServer(app)
 const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 })
 
 // Note you must call `server.start()` on the `ApolloServer`
@@ -58,8 +58,8 @@ app.use(
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.token }),
-  }),
+    context: async ({ req }) => ({ token: req.headers.token })
+  })
 )
 
 app.get('/data', (_req: Request, res: any) => {

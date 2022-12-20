@@ -22,14 +22,8 @@
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src/**/*", "index.ts",
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-  ]
+  "include": ["src/**/*", "index.ts"],
+  "exclude": ["node_modules", "dist", "build"]
 }
