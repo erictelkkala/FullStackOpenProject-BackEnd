@@ -10,7 +10,7 @@ const port = 3001
 
 mongoose.set('strictQuery', false)
 
-const server_url = process.env.MONGO_SERVER_URL || ''
+const server_url = process.env.MONGODB_URI || ''
 
 // Wait for the database connection to be established
 await mongoose.connect(server_url).then(() => {
