@@ -7,9 +7,12 @@
 ## Requirements for the project
 
 - Node 18.12.1
+- ENV variables:
+  - MONGODB_URI
 
-## How to install the project: 
+## How to install the project:
 
 To install the project, run the following commands:
+
 - `npm install`
 - `npm run start`
