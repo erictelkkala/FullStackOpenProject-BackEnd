@@ -3,11 +3,20 @@ dotenv.config()
 
 import express, { Request } from 'express'
 
+import morgan from 'morgan'
+
 import mongoose from 'mongoose'
 
 const app = express()
 const port = 3001
 
+// Log requests to the console if not in production
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Not in production')
+  app.use(morgan('dev'))
+}
+
+// This will give a warning if set true (default), will be set false in Mongoose 7.0
 mongoose.set('strictQuery', false)
 
 const server_url = process.env.MONGODB_URI || ''
