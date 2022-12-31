@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 dotenv.config()
 
 import app from './app.js'
+import logger from './utils/logger.js'
 
 import mongoose from 'mongoose'
 
@@ -12,11 +13,11 @@ const server_url = process.env.MONGODB_URI || ''
 mongoose.set('strictQuery', false)
 
 // Wait for the database connection to be established
-console.log('Connecting to MongoDB...')
+logger.info('Connecting to MongoDB...')
 await mongoose.connect(server_url).then(() => {
-  console.log('Connected to database')
+  logger.success('Connected to database')
 })
 
 app.listen(port, () => {
-  console.log(`🚀 Server ready at http://localhost:${port}/`)
+  logger.success(`🚀 Server ready at http://localhost:${port}/`)
 })
