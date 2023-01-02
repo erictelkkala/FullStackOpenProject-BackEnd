@@ -1,9 +1,8 @@
 import express, { Request } from 'express'
 import morgan from 'morgan'
 
-import logger from './utils/logger.js'
-
 import { addItem } from './db/itemOperations.js'
+import logger from './utils/logger.js'
 
 const app = express()
 

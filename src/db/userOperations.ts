@@ -1,6 +1,7 @@
 import { Request } from 'express'
-import { UserModel } from './userSchema.js'
+
 import logger from '../utils/logger.js'
+import { UserModel } from './userSchema.js'
 
 async function addUser(request: Request) {
   const user = new UserModel(request.body)

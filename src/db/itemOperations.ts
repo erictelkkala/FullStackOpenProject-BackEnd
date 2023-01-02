@@ -1,6 +1,6 @@
 import { Request } from 'express'
-import logger from '../utils/logger.js'
 
+import logger from '../utils/logger.js'
 import { ItemModel } from './itemSchema.js'
 
 function handleError(err: any) {

@@ -27,5 +27,6 @@
     "arrow-body-style": "off",
     "camelcase": "off",
     "prettier/prettier": "error"
-  }
+  },
+  "ignorePatterns": ["node_modules", "dist", "build"]
 }

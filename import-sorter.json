@@ -1,0 +1,6 @@
+{
+  "editor.formatOnSave": true,
+  "quoteMark": "single",
+  "trailingComma": "none",
+  "wrappingStyle": "prettier"
+}
