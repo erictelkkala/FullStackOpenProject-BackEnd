@@ -15,6 +15,16 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use(express.json())
 
+// Redirect http to https
+app.use(function (req, res, next) {
+  if (req.get('X-Forwarded-Proto') == 'http') {
+    // request was via http, so redirect to https
+    res.redirect('https://' + req.headers.host + req.url)
+  } else {
+    next()
+  }
+})
+
 app.get('/data', (_req: Request, res: any) => {
   res.json({ foo: 'bar' })
 })
