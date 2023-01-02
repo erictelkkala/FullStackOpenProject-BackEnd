@@ -9,6 +9,7 @@
 - Node 18.12.1
 - ENV variables:
   - MONGODB_URI
+  - PORT
 
 ## How to install the project:
 
