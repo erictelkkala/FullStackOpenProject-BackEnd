@@ -2,8 +2,18 @@ import mongoose, { InferSchemaType, Schema } from 'mongoose'
 
 const userSchema = new Schema(
   {
-    name: { type: String, required: true, min: [4, 'Username too short'] },
-    password: { type: String, required: true, min: [4, 'Password too short'] }
+    name: {
+      type: String,
+      required: true,
+      min: [4, 'Username needs to be at least 4 characters long'],
+      max: [128, 'Username cannot exceed 128 characters']
+    },
+    password: {
+      type: String,
+      required: true,
+      min: [4, 'Password needs to be at least 4 characters long'],
+      max: [128, 'Password cannot exceed 128 characters']
+    }
   },
   {
     timestamps: true
