@@ -2,5 +2,6 @@
   "editor.formatOnSave": true,
   "quoteMark": "single",
   "trailingComma": "none",
-  "wrappingStyle": "prettier"
+  "wrappingStyle": "prettier",
+  "keepUnused": [".*"]
 }

@@ -1,10 +1,15 @@
 import express, { Request } from 'express'
+import helmet from 'helmet'
 import morgan from 'morgan'
 
-import { addItem } from './db/itemOperations.js'
+import loginRouter from './controllers/login.js'
+import signupRouter from './controllers/signup.js'
+import { addItem, getAllItems } from './db/itemOperations.js'
 import logger from './utils/logger.js'
 
 const app = express()
+
+app.use(helmet()) // https://helmetjs.github.io/
 
 // Log requests to the console if not in production
 if (process.env.NODE_ENV !== 'production') {
@@ -24,12 +29,20 @@ app.use(function (req, res, next) {
   }
 })
 
+// Routes for login and signup
+app.use('/api/login', loginRouter)
+app.use('/api/signup', signupRouter)
+
 app.get('/data', (_req: Request, res: any) => {
   res.json({ foo: 'bar' })
 })
 
 app.get('/ping', (_req: Request, res: any) => {
   res.json({ pong: 'pong' })
+})
+
+app.get('/getItems', async (_req: Request, res: any) => {
+  res.json(await getAllItems())
 })
 
 app.post('/addItem', (req: Request, res: any) => {

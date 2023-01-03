@@ -4,7 +4,9 @@ import mongoose from 'mongoose'
 import app from './app.js'
 import logger from './utils/logger.js'
 
-dotenv.config()
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config()
+}
 
 const port = process.env.PORT || 3001
 const server_url = process.env.MONGODB_URI || ''
@@ -19,5 +21,5 @@ await mongoose.connect(server_url).then(() => {
 })
 
 app.listen(port, () => {
-  logger.success(`🚀 Server ready at port ${port}/`)
+  logger.success(`🚀 Server ready at port ${port}`)
 })
