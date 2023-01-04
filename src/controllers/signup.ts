@@ -2,6 +2,7 @@ import argon2 from 'argon2'
 import express, { Request, Response } from 'express'
 
 import { UserModel } from '../db/userSchema.js'
+import { addUser } from '../db/userOperations.js'
 
 const signupRouter = express.Router()
 
@@ -19,10 +20,7 @@ signupRouter.post('/', async (req: Request, res: Response) => {
     const hashedPassword = await argon2.hash(password)
 
     // Create a new user
-    const user = new UserModel({ name: name, password: hashedPassword })
-
-    // Save user to database
-    await user.save()
+    await addUser({ name: name, password: hashedPassword })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ message: 'Internal server error' })
