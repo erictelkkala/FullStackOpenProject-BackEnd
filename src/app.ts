@@ -46,8 +46,7 @@ app.get('/getItems', async (_req: Request, res: any) => {
 })
 
 app.post('/addItem', (req: Request, res: any) => {
-  addItem(req)
-  res.json({ message: 'Item added' })
+  addItem(req).then(res.json({ message: 'Item added' }))
 })
 
 export default app

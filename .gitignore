@@ -8,3 +8,6 @@ FullStackOpenProject-BackEnd.code-workspace
 # Code coverage
 .nyc_output/
 coverage/
+
+# IntelliJ config
+/.idea/

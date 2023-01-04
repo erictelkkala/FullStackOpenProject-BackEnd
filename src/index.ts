@@ -21,5 +21,5 @@ await mongoose.connect(server_url).then(() => {
 })
 
 app.listen(port, () => {
-  logger.success(`🚀 Server ready at port ${port}`)
+  logger.success(`Server ready at port ${port}`)
 })
