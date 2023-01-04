@@ -11,6 +11,14 @@ export enum Categories {
   Other = 'Other'
 }
 
+export interface ItemType {
+  listing_title: string
+  listing_description: string
+  listing_price: number
+  listing_image: string
+  listing_category: Categories
+}
+
 const itemSchema = new Schema(
   {
     listing_title: { type: String, required: true },
@@ -45,6 +53,8 @@ itemSchema.set('toJSON', {
     returned.id = returned._id
     delete returned._id
     delete returned.__v
+    delete returned.createdAt
+    delete returned.updatedAt
   }
 })
 

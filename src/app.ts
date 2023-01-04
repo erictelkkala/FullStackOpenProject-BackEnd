@@ -1,4 +1,4 @@
-import express, { Request } from 'express'
+import express, { Request, Response } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== 'production') {
 app.use(express.json())
 
 // Redirect http to https
-app.use(function (req, res, next) {
+app.use(function (req: Request, res: Response, next) {
   if (req.get('X-Forwarded-Proto') == 'http') {
     // request was via http, so redirect to https
     res.redirect('https://' + req.headers.host + req.url)
@@ -33,20 +33,22 @@ app.use(function (req, res, next) {
 app.use('/api/login', loginRouter)
 app.use('/api/signup', signupRouter)
 
-app.get('/data', (_req: Request, res: any) => {
+app.get('/data', (_req: Request, res: Response) => {
   res.json({ foo: 'bar' })
 })
 
-app.get('/ping', (_req: Request, res: any) => {
+app.get('/ping', (_req: Request, res: Response) => {
   res.json({ pong: 'pong' })
 })
 
-app.get('/getItems', async (_req: Request, res: any) => {
+app.get('/getItems', async (_req: Request, res: Response) => {
   res.json(await getAllItems())
 })
 
-app.post('/addItem', (req: Request, res: any) => {
-  addItem(req).then(res.json({ message: 'Item added' }))
+app.post('/addItem', (req: Request, res: Response) => {
+  addItem(req).then(() => {
+    res.status(201).json({ message: 'Item added' })
+  })
 })
 
 export default app

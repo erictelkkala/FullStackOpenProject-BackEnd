@@ -17,8 +17,7 @@ async function addItem(request: Request) {
 }
 
 async function getAllItems() {
-  const items = await ItemModel.find({})
-  return items
+  return ItemModel.find({})
 }
 
 export { addItem, getAllItems }
