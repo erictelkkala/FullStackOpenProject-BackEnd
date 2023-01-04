@@ -8,10 +8,10 @@
   - [x] Make the database
   - [x] Write some tests for the back-end operations with Mocha
   - [ ] Write tests for items and users
-- [ ] Deploy the back-end
+- [x] Deploy the back-end
 
 ### Front-end
 
-- [ ] Write the front-end
+- [x] Write the front-end
   - [ ] Switch the URLs to the deployed back-end
   - [ ] Write the front-end tests with Vitest
