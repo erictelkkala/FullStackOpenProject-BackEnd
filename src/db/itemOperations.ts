@@ -1,10 +1,21 @@
 import logger from '../utils/logger.js'
 import { Item, ItemModel } from './itemSchema.js'
 
+/**
+ *
+ * @remarks - Can accept any type
+ * @param err - Error to be printed
+ */
+
 function handleError(err: any) {
   logger.error(err)
 }
 
+/**
+ *
+ * @param item - Item to be added
+ * @returns An item document
+ */
 async function addItem(item: Item) {
   const newItem = new ItemModel(item)
   if (!newItem.listing_price) {
@@ -17,19 +28,29 @@ async function addItem(item: Item) {
   return newItem
 }
 
+/**
+ *
+ * @param id - _id of the item
+ */
 async function deleteItem(id: string) {
   try {
     ItemModel.findOneAndDelete({ _id: id })
   } catch (e) {
-    logger.error(e)
-    throw new Error('Item could not be found')
+    return handleError(e)
   }
 }
 
+/**
+ *
+ * @param id - _id of the item
+ */
 async function findOneItem(id: string) {
   return ItemModel.findOne({ _id: id })
 }
 
+/**
+ * @returns Array of items
+ */
 async function getAllItems() {
   return ItemModel.find({})
 }

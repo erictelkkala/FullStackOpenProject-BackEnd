@@ -3,7 +3,7 @@ import { addItem, findOneItem, getAllItems } from '../db/itemOperations'
 
 const itemRouter = express.Router()
 
-itemRouter.get('/', async (_req: Request, res: Response) => {
+itemRouter.get('/', async (res: Response) => {
   res.status(200).send(await getAllItems())
 })
 itemRouter.get('/:id', async (req: Request, res: Response) => {
