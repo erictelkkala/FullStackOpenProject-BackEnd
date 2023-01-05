@@ -1,23 +1,37 @@
-import { Request } from 'express'
-
 import logger from '../utils/logger.js'
-import { ItemModel } from './itemSchema.js'
+import { Item, ItemModel } from './itemSchema.js'
 
 function handleError(err: any) {
   logger.error(err)
 }
 
-async function addItem(request: Request) {
-  const item = new ItemModel(request.body)
-  logger.info(`Adding item ${item}`)
-  item.save(function (err) {
+async function addItem(item: Item) {
+  const newItem = new ItemModel(item)
+  if (!newItem.listing_price) {
+    newItem.listing_price = 0
+  }
+  logger.info(`Adding item ${newItem}`)
+  newItem.save(function (err) {
     if (err) return handleError(err)
   })
-  return item
+  return newItem
+}
+
+async function deleteItem(id: string) {
+  try {
+    ItemModel.findOneAndDelete({ _id: id })
+  } catch (e) {
+    logger.error(e)
+    throw new Error('Item could not be found')
+  }
+}
+
+async function findOneItem(id: string) {
+  return ItemModel.findOne({ _id: id })
 }
 
 async function getAllItems() {
   return ItemModel.find({})
 }
 
-export { addItem, getAllItems }
+export { addItem, deleteItem, findOneItem, getAllItems }

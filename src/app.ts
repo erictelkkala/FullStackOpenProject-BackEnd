@@ -4,7 +4,8 @@ import morgan from 'morgan'
 
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
-import { addItem, getAllItems } from './db/itemOperations.js'
+import itemRouter from './controllers/item'
+
 import logger from './utils/logger.js'
 
 const app = express()
@@ -29,9 +30,10 @@ app.use(function (req: Request, res: Response, next) {
   }
 })
 
-// Routes for login and signup
+// Routes
 app.use('/api/login', loginRouter)
 app.use('/api/signup', signupRouter)
+app.use('/items', itemRouter)
 
 app.get('/data', (_req: Request, res: Response) => {
   res.json({ foo: 'bar' })
@@ -39,16 +41,6 @@ app.get('/data', (_req: Request, res: Response) => {
 
 app.get('/ping', (_req: Request, res: Response) => {
   res.json({ pong: 'pong' })
-})
-
-app.get('/getItems', async (_req: Request, res: Response) => {
-  res.json(await getAllItems())
-})
-
-app.post('/addItem', (req: Request, res: Response) => {
-  addItem(req).then(() => {
-    res.status(201).json({ message: 'Item added' })
-  })
 })
 
 export default app

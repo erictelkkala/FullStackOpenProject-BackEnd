@@ -8,4 +8,13 @@ async function addUser(user: { password: string; name: any }) {
   return newUser
 }
 
-export { addUser }
+async function deleteUser(id: string) {
+  try {
+    UserModel.findOneAndDelete({ _id: id })
+  } catch (e) {
+    logger.error(e)
+    throw new Error('User could not be found')
+  }
+}
+
+export { addUser, deleteUser }

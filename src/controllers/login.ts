@@ -23,7 +23,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     expiresIn: '1d'
   })
 
-  return res.json({ token })
+  return res.status(200).json({ token, id: user.id })
 })
 
 export default loginRouter
