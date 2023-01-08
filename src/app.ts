@@ -4,7 +4,7 @@ import morgan from 'morgan'
 
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
-import itemRouter from './controllers/item'
+import itemRouter from './controllers/item.js'
 
 import logger from './utils/logger.js'
 
@@ -30,11 +30,6 @@ app.use(function (req: Request, res: Response, next) {
   }
 })
 
-// Routes
-app.use('/api/login', loginRouter)
-app.use('/api/signup', signupRouter)
-app.use('/items', itemRouter)
-
 app.get('/data', (_req: Request, res: Response) => {
   res.json({ foo: 'bar' })
 })
@@ -42,5 +37,10 @@ app.get('/data', (_req: Request, res: Response) => {
 app.get('/ping', (_req: Request, res: Response) => {
   res.json({ pong: 'pong' })
 })
+
+// Routes
+app.use('/api/login', loginRouter)
+app.use('/api/signup', signupRouter)
+app.use('/api/items', itemRouter)
 
 export default app

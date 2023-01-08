@@ -1,10 +1,16 @@
 import express, { Request, Response } from 'express'
-import { addItem, findOneItem, getAllItems } from '../db/itemOperations'
+import { addItem, findOneItem, getAllItems } from '../db/itemOperations.js'
 
 const itemRouter = express.Router()
 
-itemRouter.get('/', async (res: Response) => {
-  res.status(200).send(await getAllItems())
+itemRouter.get('/', async (_req: Request, res: Response) => {
+  const items = await getAllItems()
+
+  if (items) {
+    res.status(200).send(await items)
+  } else {
+    res.status(404).send({ message: 'Cannot find items' })
+  }
 })
 itemRouter.get('/:id', async (req: Request, res: Response) => {
   const id = req.url
