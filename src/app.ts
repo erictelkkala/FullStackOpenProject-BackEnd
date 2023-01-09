@@ -19,7 +19,15 @@ const limiter = rateLimit({
 })
 
 app.use(limiter)
-app.use(helmet({ crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false })) // https://helmetjs.github.io/
+// https://helmetjs.github.io/
+app.use(helmet.expectCt())
+app.use(helmet.frameguard())
+app.use(helmet.hidePoweredBy())
+app.use(helmet.hsts())
+app.use(helmet.ieNoOpen())
+app.use(helmet.noSniff())
+app.use(helmet.referrerPolicy())
+app.use(helmet.xssFilter())
 
 // Log requests to the console if not in production
 if (process.env.NODE_ENV !== 'production') {
