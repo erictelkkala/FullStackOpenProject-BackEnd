@@ -18,7 +18,7 @@ async function addUser(user: { password: string; name: any }) {
  */
 async function deleteUser(id: string) {
   try {
-    UserModel.findOneAndDelete({ _id: id })
+    UserModel.findOneAndDelete({ _id: { $eq: id } })
   } catch (e) {
     logger.error(e)
     throw new Error('User could not be found')

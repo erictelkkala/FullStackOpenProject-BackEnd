@@ -18,6 +18,7 @@ const limiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
+app.use(limiter)
 app.use(helmet({ crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: false })) // https://helmetjs.github.io/
 
 // Log requests to the console if not in production
@@ -47,8 +48,8 @@ app.get('/ping', (_req: Request, res: Response) => {
 })
 
 // Routes
-app.use('/api/login', loginRouter, limiter)
-app.use('/api/signup', signupRouter, limiter)
-app.use('/api/items', itemRouter, limiter)
+app.use('/api/login', loginRouter)
+app.use('/api/signup', signupRouter)
+app.use('/api/items', itemRouter)
 
 export default app
