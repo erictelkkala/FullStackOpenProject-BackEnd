@@ -4,3 +4,10 @@ dist/
 FullStackOpenProject-BackEnd.code-workspace
 
 .env
+
+# Code coverage
+.nyc_output/
+coverage/
+
+# IntelliJ config
+/.idea/

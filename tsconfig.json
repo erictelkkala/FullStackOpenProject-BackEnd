@@ -11,7 +11,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": ["node"],
+    "types": ["node", "mocha"],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -25,5 +25,5 @@
     "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*", "src/index.ts"],
-  "exclude": ["node_modules", "dist", "build"]
+  "exclude": ["node_modules", "dist", "build", "documentation"]
 }
