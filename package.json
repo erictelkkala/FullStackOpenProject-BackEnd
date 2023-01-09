@@ -10,8 +10,7 @@
     "dev": "set NODE_ENV=developement && nodemon src/index.ts",
     "test": "mocha",
     "lint": "eslint --fix --ext .ts .",
-    "lint:fix": "prettier --write . && eslint --ext .js,.jsx,.ts,.tsx,.vue . --fix",
-    "serve": "set NODE_ENV=production && tsc && node dist/index.js"
+    "lint:fix": "prettier --write . && eslint --ext .js,.jsx,.ts,.tsx,.vue . --fix"
   },
   "author": "Eric Telkkälä",
   "license": "ISC",

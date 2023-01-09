@@ -1,13 +1,5 @@
+fly.toml
 Dockerfile
 .dockerignore
 node_modules
 .git
-documentation
-test
-.eslintignore
-.eslintrc.json
-.mocharc.json
-.prettierrc
-import-sorter.json
-.md
-.env
