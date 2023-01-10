@@ -12,10 +12,19 @@ mongoose.set('strictQuery', false)
 // Wait for the database connection to be established
 logger.info('Connecting to MongoDB...')
 
-mongoose.connect(server_url).then(() => {
-  logger.success('Connected to database')
-})
+const MongoDB = async () => {
+  try {
+    mongoose.connect(server_url).then(() => {
+      logger.success('Connected to database')
+    })
+  } catch (error) {
+    logger.error(error)
+    process.exit(1)
+  }
+}
 
-app.listen(port, () => {
-  logger.success(`Server ready at port ${port}`)
+MongoDB().then(() => {
+  app.listen(port, () => {
+    logger.success(`Server ready at port ${port}`)
+  })
 })
