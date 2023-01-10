@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import request from 'supertest'
-import { Categories, ItemType } from '../db/itemSchema'
 
-import app from '../app'
+import app from '../app.js'
+import { Categories, ItemType } from '../db/itemSchema.js'
 
 describe('Request', () => {
   describe('GET', () => {
