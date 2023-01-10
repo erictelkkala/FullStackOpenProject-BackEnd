@@ -9,8 +9,9 @@ FullStackOpenProject-BackEnd.code-workspace
 .nyc_output/
 coverage/
 
-# IntelliJ config
+# IDE config
 /.idea/
+.vscode/settings.json
 
 # Local Netlify folder
 .netlify
