@@ -11,3 +11,6 @@ coverage/
 
 # IntelliJ config
 /.idea/
+
+# Local Netlify folder
+.netlify

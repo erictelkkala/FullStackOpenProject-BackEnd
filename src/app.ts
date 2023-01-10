@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
+import cors from 'cors'
 
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
@@ -18,6 +19,7 @@ const limiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
+app.use(cors)
 app.use(limiter)
 // https://helmetjs.github.io/
 app.use(helmet.expectCt())
@@ -36,16 +38,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(express.json())
-
-// Redirect http to https
-app.use(function (req: Request, res: Response, next) {
-  if (req.get('X-Forwarded-Proto') == 'http') {
-    // request was via http, so redirect to https
-    res.redirect('https://' + req.headers.host + req.url)
-  } else {
-    next()
-  }
-})
 
 app.get('/data', (_req: Request, res: Response) => {
   res.json({ foo: 'bar' })
