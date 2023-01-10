@@ -19,3 +19,20 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'azuredeploy'
+    Contents: '**'
+    TargetFolder: 'deploy'
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: 'dist'
+    Contents: '**'
+    TargetFolder: 'deploy'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'deploy'
+    publishLocation: 'FilePath'
+    TargetPath: 'deploy'
