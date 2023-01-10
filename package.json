@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "set NODE_ENV=production && node dist/index.js",
+    "start": "set NODE_ENV=production&&node dist/index.js",
     "build": "tsc",
-    "dev": "set NODE_ENV=developement && nodemon src/index.ts",
+    "dev": "NODE_ENV=developement&&nodemon src/index.ts",
     "test": "mocha",
     "lint": "eslint --fix --ext .ts .",
     "lint:fix": "prettier --write . && eslint --ext .js,.jsx,.ts,.tsx,.vue . --fix"

@@ -4,9 +4,7 @@ import mongoose from 'mongoose'
 import app from './app.js'
 import logger from './utils/logger.js'
 
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config()
-}
+dotenv.config()
 
 const port = process.env.PORT || 3001
 const server_url = process.env.MONGODB_URI || ''
