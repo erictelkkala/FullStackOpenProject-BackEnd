@@ -1,13 +1,12 @@
+import cors from 'cors'
 import express, { Request, Response } from 'express'
+import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import morgan from 'morgan'
-import rateLimit from 'express-rate-limit'
-import cors from 'cors'
 
+import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
-import itemRouter from './controllers/item.js'
-
 import logger from './utils/logger.js'
 
 const app = express()
@@ -31,8 +30,8 @@ app.use(helmet.noSniff())
 app.use(helmet.referrerPolicy())
 app.use(helmet.xssFilter())
 
-// Log requests to the console if not in production
-if (process.env.NODE_ENV !== 'production') {
+// Log requests to the consol(e if not in production
+if (process.env.NODE_ENV !== ('production' || 'prod')) {
   logger.warning('Not in production')
   app.use(morgan('dev'))
 }
