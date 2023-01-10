@@ -15,7 +15,7 @@ mongoose.set('strictQuery', false)
 // Wait for the database connection to be established
 logger.info('Connecting to MongoDB...')
 
-await mongoose.connect(server_url).then(() => {
+mongoose.connect(server_url).then(() => {
   logger.success('Connected to database')
 })
 
