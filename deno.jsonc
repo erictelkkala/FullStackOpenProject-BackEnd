@@ -1,0 +1,11 @@
+{
+"compilerOptions": {
+    "allowJs": false,
+    "lib": ["deno.window"],
+    "strict": true,
+    "types": [""]
+  },
+  "tasks": {
+    "dev": "deno run --watch src/index.ts"
+  }
+}

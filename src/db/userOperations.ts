@@ -1,5 +1,5 @@
-import logger from '../utils/logger.js'
-import { UserModel } from './userSchema.js'
+import logger from '../utils/logger.ts'
+import { UserModel } from './userSchema.ts'
 
 /**
  *

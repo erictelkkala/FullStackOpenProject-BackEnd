@@ -1,4 +1,4 @@
-import chalk from 'chalk'
+import chalk from 'npm:chalk'
 
 chalk.level = 1
 

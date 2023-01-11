@@ -1,8 +1,8 @@
-import argon2 from 'argon2'
-import express, { Request, Response } from 'express'
-import jwt from 'jsonwebtoken'
+import argon2 from 'npm:argon2'
+import express, { Request, Response } from 'npm:express'
+import jwt from 'npm:jsonwebtoken'
 
-import { UserModel } from '../db/userSchema.js'
+import { UserModel } from '../db/userSchema.ts'
 
 const loginRouter = express.Router()
 

@@ -1,9 +1,9 @@
-import mongoose from 'mongoose'
+import mongoose from 'npm:mongoose'
 
-import 'dotenv/config'
+import 'npm:dotenv/config'
 
-import app from './app.js'
-import logger from './utils/logger.js'
+import app from './app.ts'
+import logger from './utils/logger.ts'
 
 const port = process.env.PORT || 8080
 const server_url = process.env.MONGODB_URI || ''
@@ -16,7 +16,7 @@ logger.info('Connecting to MongoDB...')
 
 const MongoDB = async () => {
   try {
-    mongoose.connect(server_url).then(() => {
+    await mongoose.connect(server_url).then(() => {
       logger.success('Connected to database')
     })
   } catch (error) {

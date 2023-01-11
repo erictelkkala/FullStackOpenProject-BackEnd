@@ -1,5 +1,5 @@
-import express, { Request, Response } from 'express'
-import { addItem, findOneItem, getAllItems } from '../db/itemOperations.js'
+import express, { Request, Response } from 'npm:express'
+import { addItem, findOneItem, getAllItems } from '../db/itemOperations.ts'
 
 const itemRouter = express.Router()
 

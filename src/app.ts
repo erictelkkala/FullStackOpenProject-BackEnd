@@ -1,13 +1,13 @@
-import cors from 'cors'
-import express, { Request, Response } from 'express'
-import rateLimit from 'express-rate-limit'
-import helmet from 'helmet'
-import morgan from 'morgan'
+import { oakCors } from 'https://deno.land/x/cors/mod.ts'
+import express, { Request, Response } from 'npm:express'
+import rateLimit from 'npm:express-rate-limit'
+import helmet from 'npm:helmet'
+import morgan from 'npm:morgan'
 
-import itemRouter from './controllers/item.js'
-import loginRouter from './controllers/login.js'
-import signupRouter from './controllers/signup.js'
-import logger from './utils/logger.js'
+import itemRouter from './controllers/item.ts'
+import loginRouter from './controllers/login.ts'
+import signupRouter from './controllers/signup.ts'
+import logger from './utils/logger.ts'
 
 const app = express()
 
@@ -18,7 +18,7 @@ const limiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
-app.use(cors)
+app.use(oakCors())
 app.use(limiter)
 // https://helmetjs.github.io/
 app.use(helmet.expectCt())
@@ -30,7 +30,7 @@ app.use(helmet.noSniff())
 app.use(helmet.referrerPolicy())
 app.use(helmet.xssFilter())
 
-// Log requests to the consol(e if not in production
+// Log requests to the console if not in production
 if (process.env.NODE_ENV !== ('production' || 'prod')) {
   logger.warning('Not in production')
   app.use(morgan('dev'))

@@ -1,8 +1,8 @@
-import argon2 from 'argon2'
-import express, { Request, Response } from 'express'
+import { hash } from 'https://deno.land/x/argon2/lib/mod.ts'
+import express, { Request, Response } from 'npm:express'
 
-import { UserModel } from '../db/userSchema.js'
-import { addUser } from '../db/userOperations.js'
+import { UserModel } from '../db/userSchema.ts'
+import { addUser } from '../db/userOperations.ts'
 
 const signupRouter = express.Router()
 
@@ -17,7 +17,7 @@ signupRouter.post('/', async (req: Request, res: Response) => {
     }
 
     // Hash password
-    const hashedPassword = await argon2.hash(password)
+    const hashedPassword = await hash(password)
 
     // Create a new user
     await addUser({ name: name, password: hashedPassword })
