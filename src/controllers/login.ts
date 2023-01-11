@@ -26,4 +26,4 @@ loginRouter.post('/', async (req: Request, res: Response) => {
   return res.status(200).json({ token, id: user.id })
 })
 
-export default loginRouter
+export default lognRouter

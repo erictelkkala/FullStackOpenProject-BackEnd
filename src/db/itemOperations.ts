@@ -2,7 +2,6 @@ import logger from '../utils/logger.ts'
 import { Item, ItemModel } from './itemSchema.ts'
 
 /**
- *
  * @remarks - Can accept any type
  * @param err - Error to be printed
  */
@@ -12,7 +11,6 @@ function handleError(err: string) {
 }
 
 /**
- *
  * @param item - Item to be added
  * @returns An item document
  */
@@ -31,7 +29,6 @@ async function addItem(item: Item) {
 }
 
 /**
- *
  * @param id - _id of the item
  */
 async function deleteItem(id: string) {
@@ -43,7 +40,6 @@ async function deleteItem(id: string) {
 }
 
 /**
- *
  * @param id - _id of the item
  */
 async function findOneItem(id: string) {

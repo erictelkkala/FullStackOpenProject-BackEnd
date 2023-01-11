@@ -14,7 +14,7 @@ itemRouter.get('/', async (_req: Request, res: Response) => {
 })
 itemRouter.get('/:id', async (req: Request, res: Response) => {
   const id = req.url
-  const item = findOneItem(id)
+  const item = await findOneItem(id)
 
   if (item) {
     return res.status(200).send(item)
