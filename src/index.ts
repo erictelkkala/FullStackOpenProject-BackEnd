@@ -5,7 +5,7 @@ import 'dotenv/config'
 import app from './app.js'
 import logger from './utils/logger.js'
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 8080
 const server_url = process.env.MONGODB_URI || ''
 
 // This will give a warning if set true (default), will be set false in Mongoose 7.0
