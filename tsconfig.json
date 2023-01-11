@@ -4,14 +4,20 @@
     "transpiler": "ts-node/transpilers/swc-experimental"
   },
   "compilerOptions": {
-    "rootDirs": ["src"],
+    "rootDir": "src",
     "outDir": "dist",
-    "lib": ["es2020"],
+    "lib": [
+      "es2020"
+    ],
     "target": "ES6",
     "module": "ES6",
     "moduleResolution": "NodeNext",
+    "isolatedModules": true,
     "esModuleInterop": true,
-    "types": ["node", "mocha"],
+    "types": [
+      "node",
+      "mocha"
+    ],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -28,11 +34,12 @@
   "include": [
     "src/**/*",
     "src/index.ts",
-    "./package.json",
-    ",./package-lock.json"
+    "../package.json",
+    "../package-lock.json"
   ],
   "exclude": [
     "node_modules",
+    "src/test",
     "dist",
     "build",
     "documentation"
