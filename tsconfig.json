@@ -4,14 +4,20 @@
     "transpiler": "ts-node/transpilers/swc-experimental"
   },
   "compilerOptions": {
-    "rootDirs": ["src"],
+    "rootDir": "src",
     "outDir": "dist",
-    "lib": ["es2020"],
-    "target": "es2020",
-    "module": "esnext",
-    "moduleResolution": "node",
+    "lib": [
+      "es2020"
+    ],
+    "target": "ES6",
+    "module": "CommonJS",
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true,
     "esModuleInterop": true,
-    "types": ["node", "mocha"],
+    "types": [
+      "node",
+      "mocha"
+    ],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -22,8 +28,20 @@
     "noUnusedParameters": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "src/index.ts"],
-  "exclude": ["node_modules", "dist", "build", "documentation"]
+  "include": [
+    "src/**/*",
+    "src/index.ts",
+    "../package.json",
+    "../package-lock.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/test",
+    "dist",
+    "build",
+    "documentation"
+  ]
 }

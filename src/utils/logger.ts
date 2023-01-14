@@ -2,6 +2,13 @@ import chalk from 'chalk'
 
 chalk.level = 1
 
+/**
+ * @example
+ * Calling the logger:
+ * ```ts
+ * logger.log('message')
+ * ```
+ */
 const logger = {
   log(message: string) {
     console.log(chalk.white(message))

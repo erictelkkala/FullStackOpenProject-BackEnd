@@ -24,7 +24,7 @@ const itemSchema = new Schema(
     listing_title: { type: String, required: true },
     listing_description: { type: String, required: true },
     listing_price: {
-      type: Number,
+      type: Number || undefined,
       required: false,
       default: 0,
       min: [0, 'The price cannot be negative'],

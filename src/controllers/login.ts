@@ -9,7 +9,7 @@ const loginRouter = express.Router()
 loginRouter.post('/', async (req: Request, res: Response) => {
   const { name, password } = req.body
   // Check if user exists
-  const user = await UserModel.findOne({ name })
+  const user = await UserModel.findOne({ name: { $eq: name } })
   if (!user) {
     return res.status(401).json({ message: 'User not found' })
   }
@@ -23,7 +23,7 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     expiresIn: '1d'
   })
 
-  return res.json({ token })
+  return res.status(200).json({ token, id: user.id })
 })
 
 export default loginRouter
