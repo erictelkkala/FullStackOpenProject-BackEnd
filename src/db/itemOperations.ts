@@ -52,7 +52,7 @@ async function findOneItem(id: string) {
  * @returns Array of items
  */
 async function getAllItems() {
-  return ItemModel.find({})
+  return await ItemModel.find({})
 }
 
 export { addItem, deleteItem, findOneItem, getAllItems }

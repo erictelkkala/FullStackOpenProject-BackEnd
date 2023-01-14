@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express'
+import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import rateLimit from 'express-rate-limit'
@@ -10,6 +11,8 @@ import itemRouter from './controllers/item.js'
 import logger from './utils/logger.js'
 
 const app = express()
+app.use(cors())
+app.use(morgan('dev'))
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -23,7 +26,6 @@ app.use(helmet({ crossOriginResourcePolicy: false, crossOriginEmbedderPolicy: fa
 // Log requests to the console if not in production
 if (process.env.NODE_ENV !== 'production') {
   logger.warning('Not in production')
-  app.use(morgan('dev'))
 }
 
 app.use(express.json())

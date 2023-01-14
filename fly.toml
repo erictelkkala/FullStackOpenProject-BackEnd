@@ -1,15 +1,15 @@
-# fly.toml file generated for old-firefly-6762 on 2023-01-02T22:47:00+02:00
+# fly.toml file generated for withered-dawn-3663 on 2023-01-14T17:36:27+02:00
 
-app = "old-firefly-6762"
+app = "withered-dawn-3663"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
-[env]
-  PORT = "8080"
-
 [deploy]
   release_command = "npm run build"
+
+[env]
+  PORT = "8080"
 
 [experimental]
   allowed_public_ports = []
