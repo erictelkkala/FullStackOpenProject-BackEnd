@@ -10,6 +10,8 @@ import signupRouter from './controllers/signup.js'
 import logger from './utils/logger.js'
 
 const app = express()
+app.use(cors())
+app.use(morgan('dev'))
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -17,9 +19,8 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
-
-app.use(cors)
 app.use(limiter)
+
 // https://helmetjs.github.io/
 app.use(helmet.expectCt())
 app.use(helmet.frameguard())
@@ -33,7 +34,6 @@ app.use(helmet.xssFilter())
 // Log requests to the consol(e if not in production
 if (process.env.NODE_ENV !== ('production' || 'prod')) {
   logger.warning('Not in production')
-  app.use(morgan('dev'))
 }
 
 app.use(express.json())

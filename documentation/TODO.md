@@ -18,3 +18,4 @@
 - [x] Write the front-end
   - [ ] Switch the URLs to the deployed back-end
   - [ ] Write the front-end tests with Vitest
+  - [ ] Look at i18next for internationalization after other things are done
