@@ -1,6 +1,6 @@
-import chalk from 'npm:chalk'
+import chalk from 'npm:chalk';
 
-chalk.level = 1
+chalk.level = 1;
 
 /**
  * @example
@@ -10,21 +10,21 @@ chalk.level = 1
  * ```
  */
 const logger = {
-  log(message: string) {
-    console.log(chalk.white(message))
-  },
-  error(message: string) {
-    console.log(chalk.red(message))
-  },
-  warning(message: string) {
-    console.log(chalk.yellow(message))
-  },
-  success(message: string) {
-    console.log(chalk.green(message))
-  },
-  info(message: string) {
-    console.log(chalk.blue(message))
-  }
-}
+	log(message: string) {
+		console.log(chalk.white(message));
+	},
+	error(message: string) {
+		console.log(chalk.red(message));
+	},
+	warning(message: string) {
+		console.log(chalk.yellow(message));
+	},
+	success(message: string) {
+		console.log(chalk.green(message));
+	},
+	info(message: string) {
+		console.log(chalk.blue(message));
+	},
+};
 
-export default logger
+export default logger;
