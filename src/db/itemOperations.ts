@@ -22,7 +22,7 @@ async function addItem(item: Item) {
     newItem.listing_price = 0
   }
   logger.info(`Adding item ${newItem}`)
-  newItem.save(function (err) {
+  await newItem.save(function (err) {
     if (err) return handleError(err)
   })
   return newItem
@@ -34,7 +34,7 @@ async function addItem(item: Item) {
  */
 async function deleteItem(id: string) {
   try {
-    ItemModel.findOneAndDelete({ _id: { $eq: id } })
+    await ItemModel.findOneAndDelete({ _id: { $eq: id } })
   } catch (e) {
     return handleError(e)
   }
@@ -45,14 +45,14 @@ async function deleteItem(id: string) {
  * @param id - _id of the item
  */
 async function findOneItem(id: string) {
-  return ItemModel.findOne({ _id: { $eq: id } })
+  return await ItemModel.findOne({ _id: { $eq: id } })
 }
 
 /**
  * @returns Array of items
  */
 async function getAllItems() {
-  return ItemModel.find({})
+  return await ItemModel.find({})
 }
 
 export { addItem, deleteItem, findOneItem, getAllItems }

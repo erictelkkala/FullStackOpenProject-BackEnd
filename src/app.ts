@@ -10,6 +10,8 @@ import signupRouter from './controllers/signup.js'
 import logger from './utils/logger.js'
 
 const app = express()
+app.use(cors())
+app.use(morgan('dev'))
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -33,7 +35,6 @@ app.use(helmet.xssFilter())
 // Log requests to the consol(e if not in production
 if (process.env.NODE_ENV !== ('production' || 'prod')) {
   logger.warning('Not in production')
-  app.use(morgan('dev'))
 }
 
 app.use(express.json())
