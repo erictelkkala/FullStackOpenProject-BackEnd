@@ -19,9 +19,8 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
-
-app.use(cors)
 app.use(limiter)
+
 // https://helmetjs.github.io/
 app.use(helmet.expectCt())
 app.use(helmet.frameguard())
