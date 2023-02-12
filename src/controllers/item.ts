@@ -7,7 +7,7 @@ itemRouter.get('/', async (_req: Request, res: Response) => {
   const items = await getAllItems()
 
   if (items) {
-    res.status(200).send(await items)
+    res.status(200).send(items)
   } else {
     res.status(404).send({ message: 'Cannot find items' })
   }
