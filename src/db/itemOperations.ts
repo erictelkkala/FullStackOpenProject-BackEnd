@@ -45,14 +45,14 @@ async function deleteItem(id: string) {
  * @param id - _id of the item
  */
 async function findOneItem(id: string) {
-  return await ItemModel.findOne({ _id: { $eq: id } })
+  return ItemModel.findOne({ _id: { $eq: id } })
 }
 
 /**
  * @returns Array of items
  */
 async function getAllItems() {
-  return await ItemModel.find({})
+  return ItemModel.find({})
 }
 
 export { addItem, deleteItem, findOneItem, getAllItems }

@@ -4,6 +4,7 @@ import request from 'supertest'
 import app from '../app.js'
 import { Categories, ItemType } from '../db/itemSchema.js'
 
+// TODO: convert tests to Jest, Mocha doesn't play nice with ESNext :(
 describe('Request', () => {
   describe('GET', () => {
     it('/data should return 200 OK', async () => {
