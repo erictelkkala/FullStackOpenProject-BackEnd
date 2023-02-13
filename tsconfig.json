@@ -17,7 +17,7 @@
     "esModuleInterop": true,
     "types": [
       "node",
-      "mocha"
+      "jest"
     ],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,

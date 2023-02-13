@@ -1,9 +1,7 @@
-import { expect } from 'chai'
+import { describe, expect, test } from '@jest/globals'
 import request from 'supertest'
 import app from '../app.js'
 import sinon from 'sinon'
-
-// TODO: convert tests to Jest, Mocha doesn't play nice with ESNext :(
 
 const stub = sinon.stub(app, 'get')
 stub.resolves({
@@ -18,10 +16,10 @@ stub.resolves({
 })
 describe('Item', () => {
   describe('GET', () => {
-    it('/ should return all the items', async () => {
+    test('/should return all the items', async () => {
       const response = await request(app).get('/api/items/')
-      expect(response.status).to.equal(200)
-      expect(response.body).to.eql({
+      expect(response.status).toBe(200)
+      expect(response.body).toBe({
         item: {
           listing_title: 'mock_title',
           listing_description: 'mock_description',
