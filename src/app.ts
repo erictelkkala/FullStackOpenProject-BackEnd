@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
-import logger from './utils/logger.js'
+// import logger from './utils/logger.js'
 
 const app = express()
 app.use(cors())
@@ -31,16 +31,12 @@ app.use(helmet.noSniff())
 app.use(helmet.referrerPolicy())
 app.use(helmet.xssFilter())
 
-// Log requests to the consol(e if not in production
-if (process.env.NODE_ENV !== ('production' || 'prod')) {
-  logger.warning('Not in production')
-}
+// Log requests to the console if not in production
+// if (process.env.NODE_ENV !== ('production' || 'prod')) {
+//   logger.warning('Not in production')
+// }
 
 app.use(express.json())
-
-app.get('/data', (_req: Request, res: Response) => {
-  res.json({ foo: 'bar' })
-})
 
 app.get('/ping', (_req: Request, res: Response) => {
   res.json({ pong: 'pong' })
