@@ -11,6 +11,8 @@ describe('Request', () => {
       expect(response.status).toBe(404)
     })
   })
+  // TODO: make the app use a test database
+  // https://jestjs.io/docs/mongodb
   describe('POST', () => {
     test('should be able to add an item', async () => {
       const item: ItemType = {

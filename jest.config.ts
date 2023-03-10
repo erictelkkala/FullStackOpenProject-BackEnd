@@ -1,7 +1,12 @@
-import type { JestConfigWithTsJest } from 'ts-jest'
+import { JestConfigWithTsJest } from 'ts-jest'
+import { defaults as tsjPreset } from 'ts-jest/presets'
 
 const jestConfig: JestConfigWithTsJest = {
-  preset: 'ts-jest/presets/default-esm',
+  transform: {
+      "\\.[jt]sx?$": "babel-jest",
+  },
+  preset: '@shelf/jest-mongodb',
+  rootDir: 'src',
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   }
