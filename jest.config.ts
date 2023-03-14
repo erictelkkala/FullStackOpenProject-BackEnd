@@ -1,9 +1,8 @@
 import { JestConfigWithTsJest } from 'ts-jest'
-import { defaults as tsjPreset } from 'ts-jest/presets'
 
 const jestConfig: JestConfigWithTsJest = {
   transform: {
-      "\\.[jt]sx?$": "babel-jest",
+    '\\.[jt]sx?$': 'babel-jest'
   },
   preset: '@shelf/jest-mongodb',
   rootDir: 'src',
