@@ -1,10 +1,22 @@
-import { describe, expect, jest, test } from '@jest/globals'
+import { describe, expect, test } from '@jest/globals'
 import request from 'supertest'
 
 import app from '../app.js'
-import { Categories, ItemType } from '../db/itemSchema.js'
+import { Categories, ItemModel, ItemType } from '../db/itemSchema.js'
+
+import mongoose from 'mongoose'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+const mongoServer = await MongoMemoryServer.create()
 
 describe('Request', () => {
+  beforeAll(async () => {
+    await mongoose.connect(mongoServer.getUri(), { dbName: 'fullstack' })
+  })
+
+  afterAll(async () => {
+    await mongoose.disconnect()
+  })
+
   describe('GET', () => {
     test('/addItem should return 404', async () => {
       const response = await request(app).get('/addItem')
@@ -24,8 +36,10 @@ describe('Request', () => {
       }
 
       // Mock the controller, so it does not send the request to the database
-      jest.mock('../controllers/item', () => {
-        Promise.resolve({ status: 200 })
+      app.post('/api/items/add', async (request, response) => {
+        const newItem = new ItemModel(request.body)
+        const ret = await newItem.save()
+        response.json(ret)
       })
 
       const response = await request(app).post('/api/items/add').send(item)

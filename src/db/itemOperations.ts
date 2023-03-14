@@ -22,9 +22,11 @@ async function addItem(item: Item) {
     newItem.listing_price = 0
   }
   logger.info(`Adding item ${newItem}`)
-  await newItem.save(function (err) {
-    if (err) return handleError(err)
-  })
+  try {
+    await newItem.save()
+  } catch (err) {
+    return handleError(err)
+  }
   return newItem
 }
 
