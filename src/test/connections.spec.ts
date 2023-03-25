@@ -23,8 +23,8 @@ describe('Request', () => {
       expect(response.status).toBe(404)
     })
   })
-  // TODO: make the app use a test database
   // https://jestjs.io/docs/mongodb
+  // TODO: debug where the test suite hangs without --forceExit
   describe('POST', () => {
     test('should be able to add an item', async () => {
       const item: ItemType = {
