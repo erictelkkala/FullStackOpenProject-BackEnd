@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import { addItem, findOneItem, getAllItems } from '../db/itemOperations.js'
+import { expressjwt, Request as JWTRequest } from 'express-jwt'
 
 const itemRouter = express.Router()
 
@@ -23,15 +24,20 @@ itemRouter.get('/:id', async (req: Request, res: Response) => {
   }
 })
 
-itemRouter.post('/add', (req: Request, res: Response) => {
-  const item = req.body
-  addItem(item)
-    .then(() => {
-      res.status(201).send({ message: 'Item added' })
-    })
-    .catch(() => {
-      res.status(400).send({ message: 'Item was not valid' })
-    })
-})
+itemRouter.post(
+  '/add',
+  expressjwt({ secret: process.env.JWT_SECRET as string, algorithms: ['HS512'] }),
+  (req: JWTRequest, res: Response) => {
+    if (!req.auth?.admin) return res.sendStatus(401)
+    const item = req.body
+    return addItem(item)
+      .then(() => {
+        return res.status(201).send({ message: 'Item added' })
+      })
+      .catch(() => {
+        return res.status(400).send({ message: 'Item was not valid' })
+      })
+  }
+)
 
 export default itemRouter

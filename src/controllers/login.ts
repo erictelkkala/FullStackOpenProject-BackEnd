@@ -19,11 +19,12 @@ loginRouter.post('/', async (req: Request, res: Response) => {
     return res.status(401).json({ message: 'Invalid password' })
   }
   // Create JWT
-  const token = jwt.sign({ userId: user.id, name: user.name }, process.env.JWT_SECRET as string, {
-    expiresIn: '1d'
+  const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET as string, {
+    expiresIn: '1d',
+    algorithm: 'HS512'
   })
 
-  return res.status(200).json({ token, id: user.id })
+  return res.status(200).json({ token })
 })
 
 export default loginRouter
