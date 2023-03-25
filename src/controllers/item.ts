@@ -28,7 +28,7 @@ itemRouter.post(
   '/add',
   expressjwt({ secret: process.env.JWT_SECRET as string, algorithms: ['HS512'] }),
   (req: JWTRequest, res: Response) => {
-    if (!req.auth?.admin) return res.sendStatus(401)
+    if (!req.auth) return res.sendStatus(401)
     const item = req.body
     return addItem(item)
       .then(() => {

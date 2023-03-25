@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, { Request, Response } from 'express'
+import express, { Request, Response, NextFunction } from 'express'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import morgan from 'morgan'
@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
 import signupRouter from './controllers/signup.js'
-// import logger from './utils/logger.js'
+import logger from './utils/logger.js'
 
 const app = express()
 app.use(cors())
@@ -46,5 +46,15 @@ app.get('/ping', (_req: Request, res: Response) => {
 app.use('/api/login', loginRouter)
 app.use('/api/signup', signupRouter)
 app.use('/api/items', itemRouter)
+
+// Error handling for JWT token
+app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
+  logger.error(err.message)
+  if (err.name === 'UnauthorizedError') {
+    res.status(401).send('Invalid token')
+  } else {
+    next()
+  }
+})
 
 export default app
