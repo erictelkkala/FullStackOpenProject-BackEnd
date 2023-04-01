@@ -14,13 +14,13 @@ itemRouter.get('/', async (_req: Request, res: Response) => {
   }
 })
 itemRouter.get('/:id', async (req: Request, res: Response) => {
-  const id = req.url
+  const id = req.params.id
   const item = findOneItem(id)
 
   if (item) {
-    return res.status(200).send(item)
+    return res.status(200).send(await item)
   } else {
-    return res.status(404)
+    return res.status(404).send({ message: 'Cannot find item' })
   }
 })
 
