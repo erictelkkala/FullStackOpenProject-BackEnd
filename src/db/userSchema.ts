@@ -1,3 +1,4 @@
+import argon2 from 'argon2'
 import mongoose, { InferSchemaType, Schema } from 'mongoose'
 
 const userSchema = new Schema(
@@ -28,6 +29,14 @@ userSchema.set('toJSON', {
     delete returned.__v
     delete returned.password
   }
+})
+
+// Pre-hook to hash the password before saving
+userSchema.pre('save', async function (next) {
+  const user = this
+  const hash = await argon2.hash(user.password)
+  this.password = hash as string
+  next()
 })
 
 export type User = InferSchemaType<typeof userSchema>
