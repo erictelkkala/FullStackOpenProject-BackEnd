@@ -1,11 +1,12 @@
-import { describe, expect, test } from '@jest/globals'
+import { MongoMemoryServer } from 'mongodb-memory-server'
+import mongoose from 'mongoose'
 import request from 'supertest'
+
+import { describe, expect, test } from '@jest/globals'
 
 import app from '../app.js'
 import { Categories, ItemModel, ItemType } from '../db/itemSchema.js'
 
-import mongoose from 'mongoose'
-import { MongoMemoryServer } from 'mongodb-memory-server'
 const mongoServer = await MongoMemoryServer.create()
 
 describe('Request', () => {

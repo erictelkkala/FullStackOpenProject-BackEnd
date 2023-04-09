@@ -1,7 +1,7 @@
 import express, { Request, Response } from 'express'
 
-import { UserModel } from '../db/userSchema.js'
 import { addUser } from '../db/userOperations.js'
+import { UserModel } from '../db/userSchema.js'
 
 const signupRouter = express.Router()
 

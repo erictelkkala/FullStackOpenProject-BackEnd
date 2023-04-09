@@ -1,5 +1,5 @@
 import cors from 'cors'
-import express, { Request, Response, NextFunction } from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
 import morgan from 'morgan'
