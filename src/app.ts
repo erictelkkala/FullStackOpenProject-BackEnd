@@ -6,6 +6,7 @@ import morgan from 'morgan'
 
 import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
+import orderRouter from './controllers/order.js'
 import signupRouter from './controllers/signup.js'
 import logger from './utils/logger.js'
 
@@ -46,6 +47,7 @@ app.get('/ping', (_req: Request, res: Response) => {
 app.use('/api/login', loginRouter)
 app.use('/api/signup', signupRouter)
 app.use('/api/items', itemRouter)
+app.use('/api/order', orderRouter)
 
 // Error handling for JWT token
 app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
