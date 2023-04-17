@@ -21,6 +21,10 @@ async function addItem(item: Item) {
   if (!newItem.listing_price) {
     newItem.listing_price = 0
   }
+  if (!newItem.listing_quantity) {
+    newItem.listing_quantity = 1
+  }
+
   logger.info(`Adding item ${newItem}`)
   try {
     await newItem.save()
