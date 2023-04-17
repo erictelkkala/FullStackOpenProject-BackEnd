@@ -17,6 +17,7 @@ export interface ItemType {
   listing_price: number
   listing_image: string
   listing_category: Categories
+  listing_quantity: number
 }
 
 const itemSchema = new Schema(
@@ -37,6 +38,13 @@ const itemSchema = new Schema(
         values: ['Electronics', 'Home', 'Clothing', 'Toys', 'Books', 'Sports', 'Tools', 'Other'],
         message:
           'The category must be one of the following: Electronics, Home, Clothing, Toys, Books, Sports, Tools, Other'
+      },
+      listing_quantity: {
+        type: Number,
+        required: true,
+        default: 1,
+        min: [1, 'The quantity cannot be less than 1'],
+        max: [100, 'The quantity cannot be more than 100']
       },
       default: 'Other',
       required: true
