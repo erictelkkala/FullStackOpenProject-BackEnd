@@ -10,6 +10,8 @@ import orderRouter from './controllers/order.js'
 import signupRouter from './controllers/signup.js'
 import logger from './utils/logger.js'
 
+// TODO: Add Apollo server as middleware
+
 const app = express()
 app.use(cors())
 app.use(morgan('dev'))
