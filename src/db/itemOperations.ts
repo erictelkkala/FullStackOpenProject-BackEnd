@@ -13,24 +13,21 @@ function handleError(err: any) {
 
 /**
  *
- * @param item - Item to be added
- * @returns An item document
+ * @param item - {@link Item} to be added
+ * @returns An {@link Item item} document
  */
 async function addItem(item: Item) {
   const newItem = new ItemModel(item)
-  if (!newItem.listing_price) {
-    newItem.listing_price = 0
-  }
-  if (!newItem.listing_quantity) {
-    newItem.listing_quantity = 1
-  }
 
-  logger.info(`Adding item ${newItem}`)
-  try {
-    await newItem.save()
-  } catch (err) {
-    return handleError(err)
-  }
+  await newItem
+    .save()
+    .then(() => {
+      logger.info(`Item ${newItem} added`)
+    })
+    .catch((e) => {
+      handleError(e)
+    })
+
   return newItem
 }
 
@@ -40,7 +37,7 @@ async function addItem(item: Item) {
  */
 async function deleteItem(id: string) {
   try {
-    await ItemModel.findOneAndDelete({ _id: { $eq: id } })
+    await ItemModel.findByIdAndRemove(id)
   } catch (e) {
     return handleError(e)
   }
@@ -51,11 +48,11 @@ async function deleteItem(id: string) {
  * @param id - _id of the item
  */
 async function findOneItem(id: string) {
-  return ItemModel.findOne({ _id: { $eq: id } })
+  return ItemModel.findById(id)
 }
 
 /**
- * @returns Array of items
+ * @returns Array of {@link Item items}
  */
 async function getAllItems() {
   return ItemModel.find({})
