@@ -2,15 +2,20 @@ import cors from 'cors'
 import express, { NextFunction, Request, Response } from 'express'
 import rateLimit from 'express-rate-limit'
 import helmet from 'helmet'
+import http from 'http'
 import morgan from 'morgan'
+
+import { ApolloServer } from '@apollo/server'
+import { expressMiddleware } from '@apollo/server/express4'
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 
 import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
 import orderRouter from './controllers/order.js'
 import signupRouter from './controllers/signup.js'
+import resolvers from './graphql/resolvers.js'
+import typeDefs from './graphql/typeDefs.js'
 import logger from './utils/logger.js'
-
-// TODO: Add Apollo server as middleware
 
 const app = express()
 app.use(cors())
@@ -41,6 +46,31 @@ app.use(helmet.xssFilter())
 
 app.use(express.json())
 
+interface MyContext {
+  token?: String
+}
+
+// Our httpServer handles incoming requests to our Express app.
+// Below, we tell Apollo Server to "drain" this httpServer,
+// enabling our servers to shut down gracefully.
+const httpServer = http.createServer(app)
+
+const server = new ApolloServer<MyContext>({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+})
+
+await server.start()
+
+app.use(
+  '/graphql',
+  cors<cors.CorsRequest>(),
+  expressMiddleware(server, {
+    context: async ({ req }) => ({ token: req.headers.authorization || '' })
+  })
+)
+
 app.get('/ping', (_req: Request, res: Response) => {
   res.json({ pong: 'pong' })
 })
@@ -61,4 +91,4 @@ app.use((err: Error, _req: Request, res: Response, next: NextFunction) => {
   }
 })
 
-export default app
+export default httpServer
