@@ -28,7 +28,12 @@ const limiter = rateLimit({
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
-app.use(limiter)
+
+if (process.env.NODE_ENV !== 'development') {
+  // Don't limit requests during testing
+  logger.info('Rate limiting enabled: ' + process.env.NODE_ENV)
+  app.use(limiter)
+}
 
 // https://helmetjs.github.io/
 app.use(helmet.expectCt())
