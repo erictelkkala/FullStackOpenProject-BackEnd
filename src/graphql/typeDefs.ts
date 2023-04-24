@@ -51,7 +51,6 @@ const typeDefs = `#graphql
 
     type Query {
         allItems: [Item!]!
-        allUsers: [User!]!
         allOrders: [Order!]!
         findItemById(id: ID!): Item
         findUserById(id: ID!): User

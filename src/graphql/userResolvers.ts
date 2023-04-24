@@ -12,6 +12,12 @@ const userResolver = {
   Query: {
     findUserById: async (_parent: any, args: any) => {
       return UserModel.findById(args.id)
+    },
+    me: async (_parent: any, _args: any, context: any) => {
+      if (!context.user) {
+        throw new Error('Not authenticated')
+      }
+      return context.user
     }
   },
   Mutation: {
