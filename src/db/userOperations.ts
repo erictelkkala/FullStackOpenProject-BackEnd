@@ -20,10 +20,6 @@ async function addUser(user: { password: string; name: any }) {
     })
 }
 
-/**
- *
- * @param id - _id of the user to be deleted
- */
 async function deleteUser(id: string) {
   try {
     UserModel.findByIdAndRemove(id)

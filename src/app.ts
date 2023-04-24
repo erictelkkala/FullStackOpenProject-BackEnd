@@ -13,8 +13,9 @@ import itemRouter from './controllers/item.js'
 import loginRouter from './controllers/login.js'
 import orderRouter from './controllers/order.js'
 import signupRouter from './controllers/signup.js'
-import resolvers from './graphql/resolvers.js'
+import itemResolver from './graphql/itemResolvers.js'
 import typeDefs from './graphql/typeDefs.js'
+import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
 
 const app = express()
@@ -47,7 +48,7 @@ app.use(helmet.xssFilter())
 app.use(express.json())
 
 interface MyContext {
-  token?: String
+  token?: string
 }
 
 // Our httpServer handles incoming requests to our Express app.
@@ -55,9 +56,14 @@ interface MyContext {
 // enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app)
 
+const resolvers = Object.assign({
+  Query: Object.assign({}, itemResolver.Query, userResolver.Query),
+  Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation)
+})
+
 const server = new ApolloServer<MyContext>({
   typeDefs,
-  resolvers,
+  resolvers: resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
 })
 

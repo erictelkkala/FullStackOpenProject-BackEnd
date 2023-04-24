@@ -33,8 +33,7 @@ userSchema.set('toJSON', {
 
 // Pre-hook to hash the password before saving
 userSchema.pre('save', async function (next) {
-  const user = this
-  const hash = await argon2.hash(user.password)
+  const hash = await argon2.hash(this.password)
   this.password = hash as string
   next()
 })

@@ -49,8 +49,6 @@ const typeDefs = `#graphql
         totalPrice: Float!
     }
 
-
-
     type Query {
         allItems: [Item!]!
         allUsers: [User!]!
@@ -98,6 +96,8 @@ const typeDefs = `#graphql
             listing_quantity: Int! 
         ): Item
 
+        deleteItem(id: ID!): Item
+
         addOrder(
             user: String!
             items: [ItemInput!]!
@@ -121,6 +121,8 @@ const typeDefs = `#graphql
             name: String!
             password: String!
         ): User
+
+        deleteUser(id: ID!): User
     }
 `
 export default typeDefs
