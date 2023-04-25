@@ -21,9 +21,13 @@ const typeDefs = `#graphql
     }
 
     type User {
-        _id: ID!
+        id: ID!
         name: String!
         password: String!
+    }
+
+    type Token {
+        token: String!
     }
     
     type ShippingAddress {
@@ -40,7 +44,7 @@ const typeDefs = `#graphql
     }
 
     type Order {
-        _id: ID!
+        id: ID!
         user: User!
         orderItems: [Item!]!
         shippingAddress: ShippingAddress!
@@ -114,7 +118,7 @@ const typeDefs = `#graphql
         login(
             name: String!
             password: String!
-        ): User
+        ): Token
 
         addUser(
             name: String!

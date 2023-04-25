@@ -20,7 +20,7 @@ const itemResolver = {
     },
     /**
      *
-     * @param id - _id of the item
+     * @param id - id of the item
      * @returns An {@link Item item}
      */
     findItemById: async (_parent: any, args: any) => {
@@ -47,7 +47,7 @@ const itemResolver = {
     },
     /**
      *
-     * @param id - _id of the item
+     * @param id - id of the item
      */
     deleteItem: async (_parent: any, args: any) => {
       await ItemModel.findByIdAndRemove(args.id)

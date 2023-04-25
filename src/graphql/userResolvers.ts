@@ -1,4 +1,5 @@
 import * as argon2 from 'argon2'
+import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 
 import { UserModel } from '../db/userSchema.js'
@@ -40,11 +41,15 @@ const userResolver = {
     },
     /**
      *
-     * @param id - _id of the user to be deleted
+     * @param id - id of the user to be deleted
      */
     deleteUser: async (_parent: any, args: { id: string }, context: any) => {
       if (!context.user) {
-        throw new Error('Not authenticated')
+        throw new GraphQLError('Not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
       }
       UserModel.findByIdAndRemove(args.id)
         .then(() => {
@@ -57,16 +62,27 @@ const userResolver = {
     },
     login: async (_parent: any, args: { password: string; name: string }) => {
       const user = await UserModel.findOne({ name: args.name })
+      console.log(user)
+
       if (!user) {
-        throw new Error('User not found')
+        throw new GraphQLError('User not found', {
+          extensions: {
+            code: 'USER_NOT_FOUND'
+          }
+        })
       }
 
-      const valid = await argon2.verify(args.password, user.password)
+      const valid = await argon2.verify(user.password, args.password)
+
       if (!valid) {
-        throw new Error('Invalid password')
+        throw new GraphQLError('Invalid password', {
+          extensions: {
+            code: 'INVALID_PASSWORD'
+          }
+        })
       }
 
-      const token = { name: user.name, id: user.id }
+      const token = { name: user.name, id: user._id }
 
       return jwt.sign(token, process.env.JWT_SECRET as string, {
         expiresIn: '1d',
