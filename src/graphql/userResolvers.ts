@@ -16,7 +16,11 @@ const userResolver = {
     },
     me: async (_parent: any, _args: any, context: any) => {
       if (!context.user) {
-        throw new Error('Not authenticated')
+        throw new GraphQLError('Not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
       }
       return context.user
     }
@@ -57,12 +61,15 @@ const userResolver = {
         })
         .catch((e) => {
           logger.error(e)
-          throw new Error('User could not be found')
+          throw new GraphQLError('User not found', {
+            extensions: {
+              code: 'USER_NOT_FOUND'
+            }
+          })
         })
     },
     login: async (_parent: any, args: { password: string; name: string }) => {
       const user = await UserModel.findOne({ name: args.name })
-      console.log(user)
 
       if (!user) {
         throw new GraphQLError('User not found', {
@@ -84,10 +91,12 @@ const userResolver = {
 
       const token = { name: user.name, id: user._id }
 
-      return jwt.sign(token, process.env.JWT_SECRET as string, {
-        expiresIn: '1d',
-        algorithm: 'HS512'
-      })
+      return {
+        token: jwt.sign(token, process.env.JWT_SECRET as string, {
+          expiresIn: '1d',
+          algorithm: 'HS512'
+        })
+      }
     }
   }
 }

@@ -45,7 +45,7 @@ const typeDefs = `#graphql
 
     type Order {
         id: ID!
-        user: User!
+        user: String!
         orderItems: [Item!]!
         shippingAddress: ShippingAddress!
         paymentMethod: String!
@@ -66,6 +66,7 @@ const typeDefs = `#graphql
     Input types for mutations
     """
     input ItemInput {
+        id: ID!
         listing_title: String!
         listing_description: String!
         listing_price: Float!
@@ -103,7 +104,7 @@ const typeDefs = `#graphql
 
         addOrder(
             user: String!
-            items: [ItemInput!]!
+            order_items: [ItemInput!]!
             shippingAddress: ShippingAddressInput!
             paymentMethod: String!
             paymentResult: PaymentResultInput!

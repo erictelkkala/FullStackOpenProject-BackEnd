@@ -11,6 +11,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
 
 import itemResolver from './graphql/itemResolvers.js'
+import orderResolver from './graphql/orderResolvers.js'
 import typeDefs from './graphql/typeDefs.js'
 import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
@@ -26,9 +27,10 @@ const app = express()
 // enabling our servers to shut down gracefully.
 const httpServer = http.createServer(app)
 
+// Combine all resolvers
 const resolvers = Object.assign({
-  Query: Object.assign({}, itemResolver.Query, userResolver.Query),
-  Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation)
+  Query: Object.assign({}, itemResolver.Query, userResolver.Query, orderResolver.Query),
+  Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation, orderResolver.Mutation)
 })
 
 const server = new ApolloServer<MyContext>({
@@ -44,7 +46,9 @@ app.use(
   cors<cors.CorsRequest>(),
   bodyParser.json(),
   expressMiddleware(server, {
-    context: async ({ req }) => ({ token: req.headers.authorization || '' })
+    context: async ({ req }) => ({
+      token: req.headers.authorization || ''
+    })
   })
 )
 
