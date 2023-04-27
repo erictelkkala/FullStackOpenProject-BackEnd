@@ -6,36 +6,39 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true
-    },
+    } as const,
     orderItems: [
       {
-        name: { type: String, required: true },
-        quantity: { type: Number, required: true, min: 1, max: 100 },
-        price: { type: Number, required: true, min: 0, max: 1000000 }
-      }
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Item',
+          required: true
+        } as const,
+        quantity: { type: Number, required: true, min: 1, max: 100 }
+      } as const
     ],
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
       postalCode: { type: String, required: true },
       country: { type: String, required: true }
-    },
+    } as const,
     paymentMethod: {
       type: String,
       required: true
-    },
+    } as const,
     paymentResult: {
       id: { type: String, required: true },
       paymentStatus: { type: String, required: true },
       paymentTime: { type: String, required: true }
-    },
+    } as const,
     totalPrice: {
       type: Number,
       required: true,
       default: 0.0,
       min: 0,
       max: 1000000
-    }
+    } as const
   },
   { timestamps: true }
 )

@@ -11,7 +11,7 @@ const typeDefs = `#graphql
     }
 
     type Item {
-        id: ID!
+        _id: ID!
         listing_title: String!
         listing_description: String!
         listing_price: Float!
@@ -21,7 +21,7 @@ const typeDefs = `#graphql
     }
 
     type User {
-        id: ID!
+        _id: ID!
         name: String!
         password: String!
     }
@@ -44,7 +44,7 @@ const typeDefs = `#graphql
     }
 
     type Order {
-        id: ID!
+        _id: ID!
         user: String!
         orderItems: [Item!]!
         shippingAddress: ShippingAddress!
@@ -53,6 +53,9 @@ const typeDefs = `#graphql
         totalPrice: Float!
     }
 
+    """
+    Queries
+    """
     type Query {
         allItems: [Item!]!
         allOrders: [Order!]!
@@ -89,6 +92,11 @@ const typeDefs = `#graphql
         paymentTime: String!
     }
 
+    input OrderItemInput {
+        _id: ID!
+        quantity: Int!
+    }
+
 
     type Mutation {
         addItem(
@@ -104,7 +112,7 @@ const typeDefs = `#graphql
 
         addOrder(
             user: String!
-            order_items: [ItemInput!]!
+            orderItems: [OrderItemInput!]!
             shippingAddress: ShippingAddressInput!
             paymentMethod: String!
             paymentResult: PaymentResultInput!

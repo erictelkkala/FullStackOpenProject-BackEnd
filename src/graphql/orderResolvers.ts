@@ -1,6 +1,7 @@
 import { GraphQLError } from 'graphql'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
+import { ItemModel } from '../db/itemSchema.js'
 import { Order, OrderModel } from '../db/orderSchema.js'
 import logger from '../utils/logger.js'
 
@@ -11,12 +12,13 @@ function handleError(err: any) {
 const orderResolver = {
   Query: {
     allOrders: async () => {
-      return OrderModel.find({})
+      // TODO: Find out why categories field is not getting populated
+      return await OrderModel.find({}).populate('orderItems').populate('user')
     }
   },
   Mutation: {
-    // TODO: Check if order_items is empty due to the response
     addOrder: async (_parent: any, args: any, context: any) => {
+      console.log(args)
       if (!context.token) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
@@ -26,9 +28,26 @@ const orderResolver = {
       }
 
       //   Validate that the total sum of the order is correct
-      const totalSum = args.order_items.reduce((acc: number, item: any) => {
-        return acc + item.listing_price * item.quantity
-      }, 0)
+      let totalSum = 0
+      for (const item of args.orderItems as { _id: string; quantity: number }[]) {
+        const itemFromDb = await ItemModel.findById(item._id)
+        if (!itemFromDb) {
+          throw new GraphQLError('Item does not exist', {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
+        }
+        if (item.quantity > itemFromDb.listing_quantity) {
+          throw new GraphQLError('Quantity is greater than the available quantity', {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          })
+        }
+        const itemPrice = itemFromDb.listing_price
+        totalSum += itemPrice * item.quantity
+      }
       if (totalSum !== args.totalPrice) {
         throw new GraphQLError('Total sum is not correct', {
           extensions: {
@@ -36,7 +55,6 @@ const orderResolver = {
           }
         })
       }
-
       //   Validate that the user is the same as the one in the token
       const token = context.token.split(' ')[1]
 
@@ -53,6 +71,8 @@ const orderResolver = {
       await newOrder
         .save()
         .then(() => {
+          newOrder.populate('orderItems')
+          newOrder.populate('user')
           logger.info(`Order ${newOrder} added`)
         })
         .catch((e) => {
