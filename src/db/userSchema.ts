@@ -22,7 +22,7 @@ const userSchema = new Schema(
 )
 
 // Delete and modify unwanted fields from the response
-userSchema.set('toJSON', {
+userSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
     delete returned._id

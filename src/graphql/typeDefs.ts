@@ -11,7 +11,7 @@ const typeDefs = `#graphql
     }
 
     type Item {
-        _id: ID!
+        id: ID!
         listing_title: String!
         listing_description: String!
         listing_price: Float!
@@ -21,7 +21,7 @@ const typeDefs = `#graphql
     }
 
     type User {
-        _id: ID!
+        id: ID!
         name: String!
         password: String!
     }
@@ -44,7 +44,7 @@ const typeDefs = `#graphql
     }
 
     type Order {
-        _id: ID!
+        id: ID!
         user: String!
         orderItems: [Item!]!
         shippingAddress: ShippingAddress!
@@ -93,7 +93,7 @@ const typeDefs = `#graphql
     }
 
     input OrderItemInput {
-        _id: ID!
+        id: ID!
         quantity: Int!
     }
 

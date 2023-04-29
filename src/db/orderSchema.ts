@@ -43,7 +43,7 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 )
 
-orderSchema.set('toJSON', {
+orderSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
     delete returned._id

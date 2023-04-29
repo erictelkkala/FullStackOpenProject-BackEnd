@@ -56,7 +56,7 @@ const itemSchema = new Schema(
 )
 
 // Delete and modify unwanted fields from the response
-itemSchema.set('toJSON', {
+itemSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
     delete returned._id
