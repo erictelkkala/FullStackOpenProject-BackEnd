@@ -23,7 +23,7 @@ const itemResolver = {
      * @param id - id of the item
      * @returns An {@link Item item}
      */
-    findItemById: async (_parent: any, args: any) => {
+    getItem: async (_parent: any, args: any) => {
       return ItemModel.findById(args.id)
     }
   },

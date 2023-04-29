@@ -11,7 +11,7 @@ function handleError(err: any) {
 
 const userResolver = {
   Query: {
-    findUserById: async (_parent: any, args: any) => {
+    getUser: async (_parent: any, args: any) => {
       return UserModel.findById(args.id)
     },
     me: async (_parent: any, _args: any, context: any) => {
