@@ -66,6 +66,5 @@ itemSchema.set('toObject', {
   }
 })
 
-// 
 export type Item = InferSchemaType<typeof itemSchema>
 export const ItemModel = mongoose.model('Item', itemSchema)
