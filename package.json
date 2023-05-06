@@ -10,7 +10,9 @@
   },
   "scripts": {
     "start": "set NODE_ENV=production&&node -r dotenv/config dist/index.js",
-    "build": "tsc",
+    "clean": "rimraf dist",
+    "build": "tsc --build tsconfig.json",
+    "build:clean": "npm run clean && npm run build",
     "dev": "set NODE_ENV=development&&nodemon -r dotenv/config src/index.ts",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --runInBand --forceExit",
     "lint": "eslint --fix --ext .ts .",
@@ -69,7 +71,7 @@
     "graphql": "^16.6.0",
     "helmet": "^6.1.5",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.4",
+    "mongoose": "^7.1.0",
     "morgan": "^1.10.0",
     "typescript": "^5.0.4"
   }

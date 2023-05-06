@@ -6,13 +6,10 @@
 app = "withered-dawn-3663"
 primary_region = "arn"
 kill_signal = "SIGINT"
-kill_timeout = "5s"
+kill_timeout = 5
 
 [experimental]
   auto_rollback = true
-
-[deploy]
-  release_command = "npm run build"
 
 [env]
   PORT = "8080"
