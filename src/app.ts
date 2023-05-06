@@ -9,6 +9,7 @@ import morgan from 'morgan'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default'
 
 import itemResolver from './graphql/itemResolvers.js'
 import orderResolver from './graphql/orderResolvers.js'
@@ -36,21 +37,15 @@ const resolvers = Object.assign({
 const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers: resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+  plugins: [
+    process.env.NODE_ENV === 'production'
+      ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
+      : ApolloServerPluginLandingPageLocalDefault(),
+    ApolloServerPluginDrainHttpServer({ httpServer })
+  ]
 })
 
 await server.start()
-
-app.use(
-  '/',
-  cors<cors.CorsRequest>(),
-  bodyParser.json(),
-  expressMiddleware(server, {
-    context: async ({ req }) => ({
-      token: req.headers.authorization || ''
-    })
-  })
-)
 
 app.use(morgan('dev'))
 
@@ -76,5 +71,20 @@ app.use(helmet.ieNoOpen())
 app.use(helmet.noSniff())
 app.use(helmet.referrerPolicy())
 app.use(helmet.xssFilter())
+
+app.use(
+  '/',
+  cors<cors.CorsRequest>(),
+  bodyParser.json(),
+  expressMiddleware(server, {
+    context: async ({ req }) => ({
+      token: req.headers.authorization || ''
+    })
+  })
+)
+
+app.use('/ping', (_req, res) => {
+  res.send('pong')
+})
 
 export default httpServer
