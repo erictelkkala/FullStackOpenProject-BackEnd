@@ -1,8 +1,7 @@
-import argon2 from 'argon2'
 import express, { Request, Response } from 'express'
 
-import { UserModel } from '../db/userSchema.js'
 import { addUser } from '../db/userOperations.js'
+import { UserModel } from '../db/userSchema.js'
 
 const signupRouter = express.Router()
 
@@ -16,11 +15,9 @@ signupRouter.post('/', async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'User already exists' })
     }
 
-    // Hash password
-    const hashedPassword = await argon2.hash(password)
-
     // Create a new user
-    await addUser({ name: name, password: hashedPassword })
+    // Password hashing is done in the userSchema
+    await addUser({ name: name, password: password })
   } catch (err) {
     console.log(err)
     return res.status(500).json({ message: 'Internal server error' })

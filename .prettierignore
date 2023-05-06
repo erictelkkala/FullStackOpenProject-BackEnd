@@ -7,7 +7,6 @@ node_modules
 .prettierrc
 .prettierignore
 .eslintrc.json
-.mocharc.json
 Dockerfile
 fly.toml
 nodemon.json

@@ -1,6 +1,6 @@
-import mongoose from 'mongoose'
-
 import 'dotenv/config'
+
+import mongoose from 'mongoose'
 
 import app from './app.js'
 import logger from './utils/logger.js'
@@ -25,8 +25,8 @@ const MongoDB = async () => {
   }
 }
 
-MongoDB().then(() => {
-  app.listen(port, () => {
-    logger.success(`Server ready at port ${port}`)
+MongoDB().then(async () => {
+  await new Promise<void>((resolve) => app.listen({ port: port }, resolve)).then(() => {
+    logger.success(`Server ready at http://localhost:${port}`)
   })
 })

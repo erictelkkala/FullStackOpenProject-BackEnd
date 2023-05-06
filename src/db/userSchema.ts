@@ -1,3 +1,4 @@
+import argon2 from 'argon2'
 import mongoose, { InferSchemaType, Schema } from 'mongoose'
 
 const userSchema = new Schema(
@@ -21,13 +22,20 @@ const userSchema = new Schema(
 )
 
 // Delete and modify unwanted fields from the response
-userSchema.set('toJSON', {
+userSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
     delete returned._id
     delete returned.__v
     delete returned.password
   }
+})
+
+// Pre-hook to hash the password before saving
+userSchema.pre('save', async function (next) {
+  const hash = await argon2.hash(this.password)
+  this.password = hash as string
+  next()
 })
 
 export type User = InferSchemaType<typeof userSchema>

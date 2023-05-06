@@ -1,18 +1,19 @@
 {
   "ts-node": {
     "transpileOnly": true,
-    "transpiler": "ts-node/transpilers/swc-experimental"
+    "swc": true,
+    "esm": true
   },
   "compilerOptions": {
     "rootDir": "src",
     "outDir": "dist",
-    "lib": ["es2020"],
-    "target": "ES6",
-    "module": "CommonJS",
+    "lib": ["ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
     "esModuleInterop": true,
-    "types": ["node", "mocha"],
+    "types": ["node", "jest"],
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
