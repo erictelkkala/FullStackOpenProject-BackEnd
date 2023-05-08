@@ -2,6 +2,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
+import { readFileSync } from 'fs'
 import helmet from 'helmet'
 import http from 'http'
 import morgan from 'morgan'
@@ -16,7 +17,6 @@ import {
 
 import itemResolver from './graphql/itemResolvers.js'
 import orderResolver from './graphql/orderResolvers.js'
-import typeDefs from './graphql/typeDefs.js'
 import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
 
@@ -36,6 +36,8 @@ const resolvers = Object.assign({
   Query: Object.assign({}, itemResolver.Query, userResolver.Query, orderResolver.Query),
   Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation, orderResolver.Mutation)
 })
+
+const typeDefs = readFileSync('./src/graphql/schema.graphql', 'utf-8')
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
