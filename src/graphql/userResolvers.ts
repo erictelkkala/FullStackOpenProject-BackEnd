@@ -97,7 +97,7 @@ const userResolver = {
         token: jwt.sign(token, process.env.JWT_SECRET as string, {
           expiresIn: '1d',
           algorithm: 'HS512'
-        }) as string
+        })
       }
     }
   }

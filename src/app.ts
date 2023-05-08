@@ -20,7 +20,7 @@ import orderResolver from './graphql/orderResolvers.js'
 import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
 
-interface MyContext {
+export interface MyContext {
   token?: string
 }
 
@@ -32,12 +32,12 @@ const app = express()
 const httpServer = http.createServer(app)
 
 // Combine all resolvers
-const resolvers = Object.assign({
+export const resolvers = Object.assign({
   Query: Object.assign({}, itemResolver.Query, userResolver.Query, orderResolver.Query),
   Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation, orderResolver.Mutation)
 })
 
-const typeDefs = readFileSync('./src/graphql/schema.graphql', 'utf-8')
+export const typeDefs = readFileSync('./src/graphql/schema.graphql', 'utf-8')
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
@@ -63,12 +63,11 @@ const limiter = rateLimit({
 
 if (process.env.NODE_ENV !== 'development') {
   // Don't limit requests during testing
-  logger.info('Rate limiting enabled: ' + process.env.NODE_ENV)
+  logger.info(`Rate limiting enabled: ${process.env.NODE_ENV as string}`)
   app.use(limiter)
 }
 
 // https://helmetjs.github.io/
-app.use(helmet.expectCt())
 app.use(helmet.frameguard())
 app.use(helmet.hidePoweredBy())
 app.use(helmet.hsts())
