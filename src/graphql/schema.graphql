@@ -22,7 +22,6 @@ type Item {
 type User {
   id: ID!
   name: String!
-  password: String!
 }
 
 type Token {

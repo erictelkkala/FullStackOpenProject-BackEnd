@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit'
 import { readFileSync } from 'fs'
 import helmet from 'helmet'
 import http from 'http'
+import jwt from 'jsonwebtoken'
 import morgan from 'morgan'
 
 import { ApolloServer } from '@apollo/server'
@@ -21,7 +22,10 @@ import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
 
 export interface MyContext {
-  token?: string
+  currentUser?: {
+    id: string
+    name: string
+  }
 }
 
 const app = express()
@@ -46,7 +50,13 @@ const server = new ApolloServer<MyContext>({
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
       : ApolloServerPluginLandingPageLocalDefault(),
-    ApolloServerPluginDrainHttpServer({ httpServer })
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+      async requestDidStart({ contextValue }) {
+        // token is properly inferred as a string
+        console.log('contextValue ' + contextValue.currentUser)
+      }
+    }
   ]
 })
 
@@ -80,9 +90,15 @@ app.use(
   '/',
   cors<cors.CorsRequest>(),
   bodyParser.json(),
+  // Apollo context
   expressMiddleware(server, {
     context: async ({ req }) => ({
-      token: req.headers.authorization || ''
+      currentUser: req.headers.authorization
+        ? (jwt.verify(
+            req.headers.authorization.substring(7),
+            process.env.JWT_SECRET as string
+          ) as string)
+        : undefined
     })
   })
 )

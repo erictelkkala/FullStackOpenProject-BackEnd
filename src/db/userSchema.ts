@@ -28,6 +28,8 @@ userSchema.set('toObject', {
     delete returned._id
     delete returned.__v
     delete returned.password
+    delete returned.createdAt
+    delete returned.updatedAt
   }
 })
 
