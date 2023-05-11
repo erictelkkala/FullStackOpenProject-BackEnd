@@ -50,13 +50,7 @@ const server = new ApolloServer<MyContext>({
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
       : ApolloServerPluginLandingPageLocalDefault(),
-    ApolloServerPluginDrainHttpServer({ httpServer }),
-    {
-      async requestDidStart({ contextValue }) {
-        // token is properly inferred as a string
-        console.log('contextValue ' + contextValue.currentUser)
-      }
-    }
+    ApolloServerPluginDrainHttpServer({ httpServer })
   ]
 })
 
@@ -93,7 +87,7 @@ app.use(
   // Apollo context
   expressMiddleware(server, {
     context: async ({ req }) => ({
-      currentUser: req.headers.authorization
+      currentUser: req.headers.authorization?.startsWith('Bearer ')
         ? (jwt.verify(
             req.headers.authorization.substring(7),
             process.env.JWT_SECRET as string
