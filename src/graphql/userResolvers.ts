@@ -33,7 +33,15 @@ const userResolver = {
       }
     },
     me: async (_parent: any, _args: any, contextValue: MyContext) => {
-      return contextValue.currentUser
+      if (!contextValue.currentUser) {
+        throw new GraphQLError('Not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
+      } else {
+        return contextValue.currentUser
+      }
     }
   },
   Mutation: {
@@ -81,8 +89,6 @@ const userResolver = {
     },
     login: async (_parent: any, args: { password: string; name: string }) => {
       const user = await UserModel.findOne({ name: args.name })
-
-      console.log(user)
 
       if (!user) {
         throw new GraphQLError('User not found', {
