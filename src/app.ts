@@ -50,7 +50,16 @@ const server = new ApolloServer<MyContext>({
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
       : ApolloServerPluginLandingPageLocalDefault(),
-    ApolloServerPluginDrainHttpServer({ httpServer })
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    process.env.NODE_ENV === 'development'
+      ? {
+          async requestDidStart({ contextValue }) {
+            logger.log(
+              'contextValue: ' + contextValue.currentUser?.id + ' ' + contextValue.currentUser?.name
+            )
+          }
+        }
+      : {}
   ]
 })
 
