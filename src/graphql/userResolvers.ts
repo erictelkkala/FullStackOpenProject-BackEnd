@@ -2,8 +2,14 @@ import * as argon2 from 'argon2'
 import { GraphQLError } from 'graphql'
 import jwt from 'jsonwebtoken'
 
+import { MyContext } from '../app.js'
 import { UserModel } from '../db/userSchema.js'
 import logger from '../utils/logger.js'
+
+export interface UserToken {
+  id: string
+  name: string
+}
 
 function handleError(err: any) {
   logger.error(err)
@@ -12,17 +18,30 @@ function handleError(err: any) {
 const userResolver = {
   Query: {
     getUser: async (_parent: any, args: any) => {
-      return UserModel.findById(args.id)
+      const user = await UserModel.findById(args.id)
+      if (!user) {
+        throw new GraphQLError('User not found', {
+          extensions: {
+            code: 'NOT_FOUND'
+          }
+        })
+      }
+
+      return {
+        id: user.id as string,
+        name: user.name
+      }
     },
-    me: async (_parent: any, _args: any, context: any) => {
-      if (!context.user) {
+    me: async (_parent: any, _args: any, contextValue: MyContext) => {
+      if (!contextValue.currentUser) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
             code: 'UNAUTHENTICATED'
           }
         })
+      } else {
+        return contextValue.currentUser
       }
-      return context.user
     }
   },
   Mutation: {
@@ -71,8 +90,6 @@ const userResolver = {
     login: async (_parent: any, args: { password: string; name: string }) => {
       const user = await UserModel.findOne({ name: args.name })
 
-      console.log(user)
-
       if (!user) {
         throw new GraphQLError('User not found', {
           extensions: {
@@ -91,13 +108,13 @@ const userResolver = {
         })
       }
 
-      const token = { name: user.name, id: user.id }
+      const token: UserToken = { name: user.name, id: user.id }
 
       return {
         token: jwt.sign(token, process.env.JWT_SECRET as string, {
           expiresIn: '1d',
           algorithm: 'HS512'
-        }) as string
+        })
       }
     }
   }

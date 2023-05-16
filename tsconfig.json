@@ -1,6 +1,5 @@
 {
   "ts-node": {
-    "transpileOnly": true,
     "swc": true,
     "esm": true
   },
@@ -13,8 +12,9 @@
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
     "esModuleInterop": true,
-    "types": ["node", "jest"],
+    "types": ["node"],
     "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "strictNullChecks": true,
@@ -26,7 +26,8 @@
     "alwaysStrict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "removeComments": true
+    "removeComments": true,
+    "importHelpers": true
   },
   "include": ["src/**/*", "src/index.ts", "../package.json", "../package-lock.json"],
   "exclude": ["node_modules", "src/test", "dist", "build", "documentation"]

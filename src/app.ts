@@ -2,23 +2,30 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import rateLimit from 'express-rate-limit'
+import { readFileSync } from 'fs'
 import helmet from 'helmet'
 import http from 'http'
+import jwt from 'jsonwebtoken'
 import morgan from 'morgan'
 
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { ApolloServerPluginLandingPageLocalDefault, ApolloServerPluginLandingPageProductionDefault } from '@apollo/server/plugin/landingPage/default'
+import {
+  ApolloServerPluginLandingPageLocalDefault,
+  ApolloServerPluginLandingPageProductionDefault
+} from '@apollo/server/plugin/landingPage/default'
 
 import itemResolver from './graphql/itemResolvers.js'
 import orderResolver from './graphql/orderResolvers.js'
-import typeDefs from './graphql/typeDefs.js'
 import userResolver from './graphql/userResolvers.js'
 import logger from './utils/logger.js'
 
-interface MyContext {
-  token?: string
+export interface MyContext {
+  currentUser?: {
+    id: string
+    name: string
+  }
 }
 
 const app = express()
@@ -29,10 +36,12 @@ const app = express()
 const httpServer = http.createServer(app)
 
 // Combine all resolvers
-const resolvers = Object.assign({
+export const resolvers = Object.assign({
   Query: Object.assign({}, itemResolver.Query, userResolver.Query, orderResolver.Query),
   Mutation: Object.assign({}, itemResolver.Mutation, userResolver.Mutation, orderResolver.Mutation)
 })
+
+export const typeDefs = readFileSync('./src/graphql/schema.graphql', 'utf-8')
 
 const server = new ApolloServer<MyContext>({
   typeDefs,
@@ -41,7 +50,16 @@ const server = new ApolloServer<MyContext>({
     process.env.NODE_ENV === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
       : ApolloServerPluginLandingPageLocalDefault(),
-    ApolloServerPluginDrainHttpServer({ httpServer })
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    process.env.NODE_ENV === 'development'
+      ? {
+          async requestDidStart({ contextValue }) {
+            logger.log(
+              'contextValue: ' + contextValue.currentUser?.id + ' ' + contextValue.currentUser?.name
+            )
+          }
+        }
+      : {}
   ]
 })
 
@@ -58,12 +76,11 @@ const limiter = rateLimit({
 
 if (process.env.NODE_ENV !== 'development') {
   // Don't limit requests during testing
-  logger.info('Rate limiting enabled: ' + process.env.NODE_ENV)
+  logger.info(`Rate limiting enabled: ${process.env.NODE_ENV as string}`)
   app.use(limiter)
 }
 
 // https://helmetjs.github.io/
-app.use(helmet.expectCt())
 app.use(helmet.frameguard())
 app.use(helmet.hidePoweredBy())
 app.use(helmet.hsts())
@@ -76,9 +93,15 @@ app.use(
   '/',
   cors<cors.CorsRequest>(),
   bodyParser.json(),
+  // Apollo context
   expressMiddleware(server, {
     context: async ({ req }) => ({
-      token: req.headers.authorization || ''
+      currentUser: req.headers.authorization?.startsWith('Bearer ')
+        ? (jwt.verify(
+            req.headers.authorization.substring(7),
+            process.env.JWT_SECRET as string
+          ) as string)
+        : undefined
     })
   })
 )
