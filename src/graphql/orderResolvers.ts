@@ -1,6 +1,6 @@
 import { GraphQLError } from 'graphql'
-import jwt, { JwtPayload } from 'jsonwebtoken'
 
+import { MyContext } from '../app.js'
 import { ItemModel } from '../db/itemSchema.js'
 import { Order, OrderModel } from '../db/orderSchema.js'
 import logger from '../utils/logger.js'
@@ -11,8 +11,8 @@ function handleError(err: any) {
 
 const orderResolver = {
   Query: {
-    allOrders: async (context: any) => {
-      if (!context.token) {
+    allOrders: async (context: MyContext) => {
+      if (!context.currentUser) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
             code: 'UNAUTHENTICATED'
@@ -22,20 +22,36 @@ const orderResolver = {
       // TODO: Find out why categories field is not getting populated
       return await OrderModel.find({}).populate('orderItems').populate('user')
     },
-    getOrder: async (_parent: any, args: any, context: any) => {
-      if (!context.token) {
-        throw new GraphQLError('Not authenticated', {
+    getOrder: async (_parent: any, args: any, context: MyContext) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('Not authenticated or logged in', {
           extensions: {
             code: 'UNAUTHENTICATED'
           }
         })
       }
-      return OrderModel.findById(args.id).populate('orderItems').populate('user')
+
+      const order = await OrderModel.findById(args.id).populate('orderItems').populate('user')
+      if (!order) {
+        throw new GraphQLError('Order not found', {
+          extensions: {
+            code: 'NOT_FOUND'
+          }
+        })
+      }
+      if ((order.user.id as unknown as string) !== context.currentUser.id) {
+        throw new GraphQLError('Not authorized to see order not associated with your account', {
+          extensions: {
+            code: 'UNAUTHORIZED'
+          }
+        })
+      }
+      return order
     }
   },
   Mutation: {
-    addOrder: async (_parent: any, args: any, context: any) => {
-      if (!context.token) {
+    addOrder: async (_parent: any, args: any, context: MyContext) => {
+      if (!context.currentUser) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
             code: 'UNAUTHENTICATED'
@@ -71,11 +87,7 @@ const orderResolver = {
           }
         })
       }
-      //   Validate that the user is the same as the one in the token
-      const token = context.token.split(' ')[1]
-
-      const decodedToken = jwt.verify(token, process.env.JWT_SECRET as string) as JwtPayload
-      if (decodedToken.id !== args.user) {
+      if (context.currentUser.id !== args.user) {
         throw new GraphQLError('User is not the same as the one in the token', {
           extensions: {
             code: 'BAD_USER_INPUT'

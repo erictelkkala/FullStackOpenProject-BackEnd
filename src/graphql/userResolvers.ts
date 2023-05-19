@@ -66,8 +66,8 @@ const userResolver = {
      *
      * @param id - id of the user to be deleted
      */
-    deleteUser: async (_parent: any, args: { id: string }, context: any) => {
-      if (!context.user) {
+    deleteUser: async (_parent: any, args: { id: string }, context: MyContext) => {
+      if (!context.currentUser) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
             code: 'UNAUTHENTICATED'
