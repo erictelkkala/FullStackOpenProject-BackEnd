@@ -31,7 +31,11 @@ const orderResolver = {
         })
       }
 
-      const order = await OrderModel.findById(args.id).populate('orderItems').populate('user')
+      const order = await OrderModel.findById(args.id).populate([
+        { path: 'orderItems', populate: { path: 'item', model: ItemModel } },
+        'user'
+      ])
+      console.log(order)
       if (!order) {
         throw new GraphQLError('Order not found', {
           extensions: {
