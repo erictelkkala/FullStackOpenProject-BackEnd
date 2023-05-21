@@ -103,9 +103,9 @@ type Mutation {
     listing_image: String!
     listing_category: Categories!
     listing_quantity: Int!
-  ): Item
+  ): Item!
 
-  deleteItem(id: ID!): Item
+  deleteItem(id: ID!): Item!
 
   addOrder(
     user: String!
@@ -114,13 +114,13 @@ type Mutation {
     paymentMethod: String!
     paymentResult: PaymentResultInput!
     totalPrice: Float!
-  ): Order
+  ): ID!
 
-  createUser(name: String!, password: String!): User
+  createUser(name: String!, password: String!): User!
 
-  login(name: String!, password: String!): Token
+  login(name: String!, password: String!): Token!
 
-  addUser(name: String!, password: String!): User
+  addUser(name: String!, password: String!): User!
 
-  deleteUser(id: ID!): User
+  deleteUser(id: ID!): User!
 }

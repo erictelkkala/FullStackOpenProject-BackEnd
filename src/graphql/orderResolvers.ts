@@ -103,8 +103,7 @@ const orderResolver = {
       await newOrder
         .save()
         .then(() => {
-          newOrder.populate('orderItems')
-          newOrder.populate('user')
+          newOrder.populate(['orderItems', 'user'])
           logger.info(`Order ${newOrder} added`)
         })
         .catch((e) => {
@@ -115,7 +114,7 @@ const orderResolver = {
             }
           })
         })
-      return newOrder
+      return newOrder.id
     }
   }
 }
