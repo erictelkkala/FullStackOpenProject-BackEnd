@@ -54,7 +54,7 @@ const orderResolver = {
     }
   },
   Mutation: {
-    addOrder: async (_parent: any, args: any, context: MyContext) => {
+    addOrder: async (_parent: any, args: Order, context: MyContext) => {
       if (!context.currentUser) {
         throw new GraphQLError('Not authenticated', {
           extensions: {
@@ -63,35 +63,46 @@ const orderResolver = {
         })
       }
 
-      //   Validate that the total sum of the order is correct
-      let totalSum = 0
-      for (const item of args.orderItems as { _id: string; quantity: number }[]) {
-        const itemFromDb = await ItemModel.findById(item._id)
-        if (!itemFromDb) {
-          throw new GraphQLError('Item does not exist', {
-            extensions: {
-              code: 'BAD_USER_INPUT'
+      async function confirmItemsExist(items: { id: any; quantity: number }[]): Promise<number> {
+        return new Promise(async (resolve) => {
+          //   Validate that the total sum of the order is correct
+          let totalSum = 0
+          for (const item of items) {
+            const itemFromDb = await ItemModel.findById(item.id as string)
+            if (!itemFromDb) {
+              throw new GraphQLError('Item does not exist', {
+                extensions: {
+                  code: 'BAD_USER_INPUT'
+                }
+              })
             }
-          })
-        }
-        if (item.quantity > itemFromDb.listing_quantity) {
-          throw new GraphQLError('Quantity is greater than the available quantity', {
-            extensions: {
-              code: 'BAD_USER_INPUT'
+            if (item.quantity > itemFromDb.listing_quantity) {
+              throw new GraphQLError('Quantity is greater than the available quantity', {
+                extensions: {
+                  code: 'BAD_USER_INPUT'
+                }
+              })
             }
-          })
-        }
-        const itemPrice = itemFromDb.listing_price
-        totalSum += itemPrice * item.quantity
-      }
-      if (totalSum !== args.totalPrice) {
-        throw new GraphQLError('Total sum is not correct', {
-          extensions: {
-            code: 'BAD_USER_INPUT'
+            const itemPrice = itemFromDb.listing_price
+            totalSum += itemPrice * item.quantity
           }
+          resolve(totalSum)
         })
       }
-      if (context.currentUser.id !== args.user) {
+
+      const totalSum = await confirmItemsExist(args.orderItems)
+
+      if (totalSum !== args.totalPrice) {
+        throw new GraphQLError(
+          `Total sum is not correct, value ${args.totalPrice} was provided, when it should have been ${totalSum}`,
+          {
+            extensions: {
+              code: 'BAD_USER_INPUT'
+            }
+          }
+        )
+      }
+      if (context.currentUser?.id !== (args.user as unknown as string)) {
         throw new GraphQLError('User is not the same as the one in the token', {
           extensions: {
             code: 'BAD_USER_INPUT'
@@ -103,8 +114,7 @@ const orderResolver = {
       await newOrder
         .save()
         .then(() => {
-          newOrder.populate(['orderItems', 'user'])
-          logger.info(`Order ${newOrder} added`)
+          logger.info(`Order added: ${newOrder}`)
         })
         .catch((e) => {
           handleError(e)
