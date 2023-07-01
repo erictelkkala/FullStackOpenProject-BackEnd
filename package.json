@@ -13,7 +13,7 @@
     "clean": "rimraf dist",
     "build": "tsc --build tsconfig.json",
     "build:clean": "npm run clean && npm run build",
-    "dev": "set NODE_ENV=development&&nodemon -r dotenv/config src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "lint": "eslint --fix --ext .ts .",
     "lint:fix": "prettier --write . && eslint --ext .js,.jsx,.ts,.tsx,.vue . --fix"
   },
@@ -46,7 +46,8 @@
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "regenerator-runtime": "^0.13.11",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "tsx": "^3.12.7"
   },
   "dependencies": {
     "@apollo/server": "^4.7.1",
