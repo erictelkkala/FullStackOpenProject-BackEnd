@@ -55,8 +55,9 @@ type Order {
 Queries
 """
 type Query {
-  allItems: [Item!]!
-  allOrders: [Order!]!
+  allItems: [Item!]
+  allOrders: [Order!]
+  getAllOrdersByUser: [Order!]
   getItem(id: ID!): Item
   getUser(id: ID!): User
   getOrder(id: ID!): Order

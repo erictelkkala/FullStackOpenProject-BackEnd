@@ -20,7 +20,20 @@ const orderResolver = {
         })
       }
       // TODO: Find out why categories field is not getting populated
-      return await OrderModel.find({}).populate('orderItems').populate('user')
+      return OrderModel.find({}).populate('orderItems').populate('user')
+    },
+    getAllOrdersByUser: async (_parent: any, _args: any, context: MyContext) => {
+      if (!context.currentUser) {
+        throw new GraphQLError('Not authenticated', {
+          extensions: {
+            code: 'UNAUTHENTICATED'
+          }
+        })
+      }
+
+      return OrderModel.find({ user: context.currentUser.id })
+        .populate('orderItems')
+        .populate('user')
     },
     getOrder: async (_parent: any, args: any, context: MyContext) => {
       if (!context.currentUser) {
