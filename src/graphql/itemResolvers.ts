@@ -21,10 +21,11 @@ const itemResolver = {
     /**
      *
      * @param id - id of the item
-     * @returns An {@link Item item}
+     * @returns An {@link Item}
      */
     getItem: async (_parent: any, args: any) => {
-      return ItemModel.findById(args.id)
+      const item = await ItemModel.findById(args.id)
+      return item
     }
   },
   Mutation: {

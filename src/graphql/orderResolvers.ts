@@ -1,3 +1,4 @@
+import { log } from 'console'
 import { GraphQLError } from 'graphql'
 
 import { MyContext } from '../app.js'
@@ -31,9 +32,12 @@ const orderResolver = {
         })
       }
 
-      return OrderModel.find({ user: context.currentUser.id })
-        .populate('orderItems')
-        .populate('user')
+      const order = (await OrderModel.find({ user: context.currentUser.id }).populate([
+        { path: 'orderItems', populate: { path: 'item', model: ItemModel } },
+        'user'
+      ])) as Order[]
+      console.log(order.forEach((o) => console.log(o)))
+      return order
     },
     getOrder: async (_parent: any, args: any, context: MyContext) => {
       if (!context.currentUser) {
@@ -76,12 +80,14 @@ const orderResolver = {
         })
       }
 
-      async function confirmItemsExist(items: { id: any; quantity: number }[]): Promise<number> {
+      async function confirmItemsExist(items: Order['orderItems']): Promise<number> {
         return new Promise(async (resolve) => {
           //   Validate that the total sum of the order is correct
           let totalSum = 0
           for (const item of items) {
-            const itemFromDb = await ItemModel.findById(item.id as string)
+            log(item)
+            const itemFromDb = await ItemModel.findById(item.id as unknown as string)
+            log(itemFromDb)
             if (!itemFromDb) {
               throw new GraphQLError('Item does not exist', {
                 extensions: {
@@ -89,7 +95,7 @@ const orderResolver = {
                 }
               })
             }
-            if (item.quantity > itemFromDb.listing_quantity) {
+            if (item.quantity_sold > itemFromDb.listing_quantity) {
               throw new GraphQLError('Quantity is greater than the available quantity', {
                 extensions: {
                   code: 'BAD_USER_INPUT'
@@ -97,7 +103,7 @@ const orderResolver = {
               })
             }
             const itemPrice = itemFromDb.listing_price
-            totalSum += itemPrice * item.quantity
+            totalSum += itemPrice * item.quantity_sold
           }
           resolve(totalSum)
         })

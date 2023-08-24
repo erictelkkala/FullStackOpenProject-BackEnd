@@ -9,11 +9,11 @@
     "npm": ">=8.1.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production exec node -r dotenv/config dist/index.js",
+    "start": "set NODE_ENV=production exec node -r dotenv/config dist/index.js",
     "clean": "rimraf dist",
     "build": "tsc --build tsconfig.json",
     "build:clean": "npm run clean && npm run build",
-    "dev": "NODE_ENV=development exec tsx watch src/index.ts",
+    "dev": "set NODE_ENV=development && tsx watch src/index.ts",
     "lint": "eslint --fix --ext .ts .",
     "lint:fix": "prettier --write . && eslint --ext .js,.jsx,.ts,.tsx,.vue . --fix"
   },

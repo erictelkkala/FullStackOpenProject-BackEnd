@@ -1,19 +1,51 @@
-import mongoose, { InferSchemaType } from 'mongoose'
+import mongoose, { InferSchemaType, Types } from 'mongoose'
 
-const orderSchema = new mongoose.Schema(
+import { Categories } from './itemSchema.js'
+
+interface OrderInterface {
+  user: {
+    id: Types.ObjectId
+    name: string
+  }
+  orderItems: {
+    id: Types.ObjectId
+    listing_title: string
+    listing_description: string
+    listing_price: number
+    listing_image: string
+    listing_category: Categories
+    listing_quantity: number
+    quantity_sold: number
+  }[]
+  shippingAddress: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  paymentMethod: string
+  paymentResult: {
+    id: string
+    paymentStatus: string
+    paymentTime: string
+  }
+  totalPrice: number
+}
+
+const orderSchema = new mongoose.Schema<OrderInterface>(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'User',
       required: true
     } as const,
     orderItems: [
       {
-        id: {
-          type: mongoose.Schema.Types.ObjectId,
+        item: {
+          type: Types.ObjectId,
           ref: 'Item',
           required: true
-        } as const,
+        },
         quantity: { type: Number, required: true, min: 1, max: 100 }
       } as const
     ],
