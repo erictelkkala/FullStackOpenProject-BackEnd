@@ -86,7 +86,7 @@ input PaymentResultInput {
 
 input OrderItemInput {
   id: ID!
-  quantity_sold: Int!
+  quantity: Int!
 }
 
 type Mutation {

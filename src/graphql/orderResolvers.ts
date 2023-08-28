@@ -1,4 +1,3 @@
-import { log } from 'console'
 import { GraphQLError } from 'graphql'
 
 import { MyContext } from '../app.js'
@@ -85,9 +84,7 @@ const orderResolver = {
           //   Validate that the total sum of the order is correct
           let totalSum = 0
           for (const item of items) {
-            log(item)
             const itemFromDb = await ItemModel.findById(item.id as unknown as string)
-            log(itemFromDb)
             if (!itemFromDb) {
               throw new GraphQLError('Item does not exist', {
                 extensions: {
@@ -95,7 +92,7 @@ const orderResolver = {
                 }
               })
             }
-            if (item.quantity_sold > itemFromDb.listing_quantity) {
+            if (item.quantity > itemFromDb.listing_quantity) {
               throw new GraphQLError('Quantity is greater than the available quantity', {
                 extensions: {
                   code: 'BAD_USER_INPUT'
@@ -103,7 +100,7 @@ const orderResolver = {
               })
             }
             const itemPrice = itemFromDb.listing_price
-            totalSum += itemPrice * item.quantity_sold
+            totalSum += itemPrice * item.quantity
           }
           resolve(totalSum)
         })
