@@ -85,7 +85,7 @@ input PaymentResultInput {
 }
 
 input OrderItemInput {
-  id: ID!
+  _id: ID!
   quantity: Int!
 }
 
