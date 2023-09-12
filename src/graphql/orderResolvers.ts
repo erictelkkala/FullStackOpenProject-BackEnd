@@ -1,4 +1,5 @@
 import { GraphQLError } from 'graphql'
+import mongoose from 'mongoose'
 
 import { MyContext } from '../app.js'
 import { ItemModel } from '../db/itemSchema.js'
@@ -20,7 +21,7 @@ const orderResolver = {
         })
       }
       // TODO: Find out why categories field is not getting populated
-      return OrderModel.find({}).populate('orderItems').populate('user')
+      return OrderModel.find({}).populate('orderItems')
     },
     getAllOrdersByUser: async (_parent: any, _args: any, context: MyContext) => {
       if (!context.currentUser) {
@@ -40,7 +41,7 @@ const orderResolver = {
     },
     getOrder: async (_parent: any, args: any, context: MyContext) => {
       if (!context.currentUser) {
-        throw new GraphQLError('Not authenticated or logged in', {
+        throw new GraphQLError('Not logged in', {
           extensions: {
             code: 'UNAUTHENTICATED'
           }
@@ -48,10 +49,9 @@ const orderResolver = {
       }
 
       const order = await OrderModel.findById(args.id).populate([
-        { path: 'orderItems', populate: { path: 'item', model: ItemModel } },
-        'user'
+        { path: 'orderItems', populate: { path: 'item' } }
       ])
-      console.log(order)
+
       if (!order) {
         throw new GraphQLError('Order not found', {
           extensions: {
@@ -59,7 +59,9 @@ const orderResolver = {
           }
         })
       }
-      if ((order.user.id as unknown as string) !== context.currentUser.id) {
+
+      const userObjectId = new mongoose.Types.ObjectId(context.currentUser.id)
+      if (!order.user?.equals(userObjectId)) {
         throw new GraphQLError('Not authorized to see order not associated with your account', {
           extensions: {
             code: 'UNAUTHORIZED'
@@ -84,7 +86,7 @@ const orderResolver = {
           //   Validate that the total sum of the order is correct
           let totalSum = 0
           for (const item of items) {
-            const itemFromDb = await ItemModel.findById(item.id as unknown as string)
+            const itemFromDb = await ItemModel.findById(item.item as unknown as string)
             if (!itemFromDb) {
               throw new GraphQLError('Item does not exist', {
                 extensions: {

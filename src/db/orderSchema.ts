@@ -1,12 +1,9 @@
 import mongoose, { InferSchemaType, Types } from 'mongoose'
 
 interface OrderInterface {
-  user: {
-    id: Types.ObjectId
-    name: string
-  }
+  user?: Types.ObjectId
   orderItems: {
-    id: Types.ObjectId
+    item: Types.ObjectId
     quantity: number
   }[]
   shippingAddress: {
@@ -30,10 +27,10 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
       type: Types.ObjectId,
       ref: 'User',
       required: true
-    } as const,
+    },
     orderItems: [
       {
-        id: {
+        item: {
           type: Types.ObjectId,
           ref: 'Item',
           required: true

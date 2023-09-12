@@ -96,7 +96,7 @@ app.use(
   // Apollo context
   expressMiddleware(server, {
     context: async ({ req }) => ({
-      currentUser: req.headers.authorization?.startsWith('Bearer ')
+      currentUser: req.headers.authorization?.toLowerCase().startsWith('bearer ')
         ? (jwt.verify(
             req.headers.authorization.substring(7),
             process.env.JWT_SECRET as string
