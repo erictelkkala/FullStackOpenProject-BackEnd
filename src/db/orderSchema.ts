@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
     } as const,
     orderItems: [
       {
-        _id: {
+        id: {
           type: Types.ObjectId,
           ref: 'Item',
           required: true
