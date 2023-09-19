@@ -9,7 +9,7 @@
     "npm": ">=8.1.0"
   },
   "scripts": {
-    "start": "set NODE_ENV=production exec node -r dotenv/config dist/index.js",
+    "start": "node -r dotenv/config dist/index.js",
     "clean": "rimraf dist",
     "build": "tsc --build tsconfig.json",
     "build:clean": "npm run clean && npm run build",
