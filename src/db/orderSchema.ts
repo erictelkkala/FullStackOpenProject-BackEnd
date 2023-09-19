@@ -1,19 +1,40 @@
-import mongoose, { InferSchemaType } from 'mongoose'
+import mongoose, { InferSchemaType, Types } from 'mongoose'
 
-const orderSchema = new mongoose.Schema(
+interface OrderInterface {
+  user?: Types.ObjectId
+  orderItems: {
+    item: Types.ObjectId
+    quantity: number
+  }[]
+  shippingAddress: {
+    address: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  paymentMethod: string
+  paymentResult: {
+    id: string
+    paymentStatus: string
+    paymentTime: string
+  }
+  totalPrice: number
+}
+
+const orderSchema = new mongoose.Schema<OrderInterface>(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Types.ObjectId,
       ref: 'User',
       required: true
-    } as const,
+    },
     orderItems: [
       {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
+        item: {
+          type: Types.ObjectId,
           ref: 'Item',
           required: true
-        } as const,
+        },
         quantity: { type: Number, required: true, min: 1, max: 100 }
       } as const
     ],
@@ -46,6 +67,7 @@ const orderSchema = new mongoose.Schema(
 orderSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
+    delete returned.paymentResult
     delete returned._id
     delete returned.__v
   }

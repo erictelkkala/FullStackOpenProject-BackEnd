@@ -41,10 +41,15 @@ type PaymentResult {
   paymentTime: String!
 }
 
+type OrderItem {
+  item: Item!
+  quantity: Int!
+}
+
 type Order {
   id: ID!
   user: String!
-  orderItems: [Item!]!
+  orderItems: [OrderItem!]!
   shippingAddress: ShippingAddress!
   paymentMethod: String!
   paymentResult: PaymentResult!
@@ -55,8 +60,9 @@ type Order {
 Queries
 """
 type Query {
-  allItems: [Item!]!
-  allOrders: [Order!]!
+  allItems: [Item!]
+  allOrders: [Order!]
+  getAllOrdersByUser: [Order!]
   getItem(id: ID!): Item
   getUser(id: ID!): User
   getOrder(id: ID!): Order
@@ -68,13 +74,6 @@ Input types for mutations
 """
 input ItemInput {
   id: ID!
-  listing_title: String!
-  listing_description: String!
-  listing_price: Float!
-  listing_image: String!
-  listing_category: Categories!
-  listing_quantity: Int!
-  quantity: Int!
 }
 
 input ShippingAddressInput {
@@ -91,7 +90,7 @@ input PaymentResultInput {
 }
 
 input OrderItemInput {
-  id: ID!
+  item: ID!
   quantity: Int!
 }
 
@@ -103,9 +102,9 @@ type Mutation {
     listing_image: String!
     listing_category: Categories!
     listing_quantity: Int!
-  ): Item
+  ): Item!
 
-  deleteItem(id: ID!): Item
+  deleteItem(id: ID!): Item!
 
   addOrder(
     user: String!
@@ -114,13 +113,13 @@ type Mutation {
     paymentMethod: String!
     paymentResult: PaymentResultInput!
     totalPrice: Float!
-  ): Order
+  ): ID!
 
-  createUser(name: String!, password: String!): User
+  createUser(name: String!, password: String!): User!
 
-  login(name: String!, password: String!): Token
+  login(name: String!, password: String!): Token!
 
-  addUser(name: String!, password: String!): User
+  addUser(name: String!, password: String!): User!
 
-  deleteUser(id: ID!): User
+  deleteUser(id: ID!): User!
 }
