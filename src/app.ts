@@ -47,20 +47,18 @@ const server = new ApolloServer<MyContext>({
   typeDefs,
   resolvers: resolvers,
   plugins: [
-    process.env.NODE_ENV === 'production'
+    process.env.NODE_ENV?.toString() === 'production'
       ? ApolloServerPluginLandingPageProductionDefault({ footer: false })
-      : ApolloServerPluginLandingPageLocalDefault(),
-    ApolloServerPluginDrainHttpServer({ httpServer }),
-    process.env.NODE_ENV === 'development'
-      ? {
+      : ApolloServerPluginLandingPageLocalDefault() && {
           async requestDidStart({ contextValue }) {
             logger.log(
               'contextValue: ' + contextValue.currentUser?.id + ' ' + contextValue.currentUser?.name
             )
           }
-        }
-      : {}
-  ]
+        },
+    ApolloServerPluginDrainHttpServer({ httpServer })
+  ],
+  introspection: process.env.NODE_ENV?.toString() !== 'production'
 })
 
 await server.start()
@@ -74,7 +72,7 @@ const limiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV?.toString() == 'production') {
   // Don't limit requests during testing
   logger.info(`Rate limiting enabled: ${process.env.NODE_ENV as string}`)
   app.use(limiter)
@@ -94,6 +92,7 @@ app.use(
   cors<cors.CorsRequest>(),
   bodyParser.json(),
   // Apollo context
+  // The Apollo sandbox MIGHT leave the authorization token in the context, making it expired and not allowing for schema introscpection
   expressMiddleware(server, {
     context: async ({ req }) => ({
       currentUser: req.headers.authorization?.toLowerCase().startsWith('bearer ')
