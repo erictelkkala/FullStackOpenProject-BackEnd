@@ -50,7 +50,7 @@
     "tsx": "^3.12.7"
   },
   "dependencies": {
-    "@apollo/server": "^4.7.1",
+    "@apollo/server": "^4.9.3",
     "argon2": "^0.30.3",
     "body-parser": "^1.20.2",
     "chalk": "^5.2.0",
