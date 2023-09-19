@@ -12,9 +12,9 @@
 name: "CodeQL"
 
 on:
-  push:
-    # only run on dev branch, since main branch should be protected
-    branches: [ "dev" ]
+  pull_request:
+  - main
+  - master
 
 jobs:
   analyze:
