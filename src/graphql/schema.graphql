@@ -41,10 +41,15 @@ type PaymentResult {
   paymentTime: String!
 }
 
+type OrderItem {
+  item: Item!
+  quantity: Int!
+}
+
 type Order {
   id: ID!
   user: String!
-  orderItems: [Item!]!
+  orderItems: [OrderItem!]!
   shippingAddress: ShippingAddress!
   paymentMethod: String!
   paymentResult: PaymentResult!

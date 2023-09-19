@@ -52,6 +52,8 @@ const orderResolver = {
         { path: 'orderItems', populate: { path: 'item' } }
       ])
 
+      logger.info(`Order: ${order}`)
+
       if (!order) {
         throw new GraphQLError('Order not found', {
           extensions: {
@@ -68,7 +70,7 @@ const orderResolver = {
           }
         })
       }
-      return order
+      return order as Order
     }
   },
   Mutation: {

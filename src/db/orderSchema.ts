@@ -67,6 +67,7 @@ const orderSchema = new mongoose.Schema<OrderInterface>(
 orderSchema.set('toObject', {
   transform: (_document, returned) => {
     returned.id = returned._id
+    delete returned.paymentResult
     delete returned._id
     delete returned.__v
   }
