@@ -54,6 +54,7 @@ type Order {
   paymentMethod: String!
   paymentResult: PaymentResult!
   totalPrice: Float!
+  createdAt: String!
 }
 
 """
@@ -61,7 +62,6 @@ Queries
 """
 type Query {
   allItems: [Item!]
-  allOrders: [Order!]
   getAllOrdersByUser: [Order!]
   getItem(id: ID!): Item
   getUser(id: ID!): User
@@ -95,6 +95,7 @@ input OrderItemInput {
 }
 
 type Mutation {
+  # addItem and deleteItem are for testing purposes only
   addItem(
     listing_title: String!
     listing_description: String!

@@ -12,17 +12,6 @@ function handleError(err: any) {
 
 const orderResolver = {
   Query: {
-    allOrders: async (context: MyContext) => {
-      if (!context.currentUser) {
-        throw new GraphQLError('Not authenticated', {
-          extensions: {
-            code: 'UNAUTHENTICATED'
-          }
-        })
-      }
-      // TODO: Find out why categories field is not getting populated
-      return OrderModel.find({}).populate('orderItems')
-    },
     getAllOrdersByUser: async (_parent: any, _args: any, context: MyContext) => {
       if (!context.currentUser) {
         throw new GraphQLError('Not authenticated', {
@@ -33,8 +22,7 @@ const orderResolver = {
       }
 
       const order = (await OrderModel.find({ user: context.currentUser.id }).populate([
-        { path: 'orderItems', populate: { path: 'item', model: ItemModel } },
-        'user'
+        { path: 'orderItems', populate: { path: 'item' } }
       ])) as Order[]
       console.log(order.forEach((o) => console.log(o)))
       return order
