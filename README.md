@@ -7,7 +7,7 @@
   - [Interesting finds in this project](#interesting-finds-in-this-project)
 
 ## Relevant links
-- [Link to hours spent on the project](documentation\hoursUsed.md)
+- [Link to hours spent on the project](documentation/hoursUsed.md)
 - [Link to the front-end repository](https://github.com/erictelkkala/FullStackOpenProject-FrontEnd)
 - [Link to the front-end deployment](https://deploy-preview-4--effulgent-bombolone-cf0607.netlify.app/)
   
